@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->tinyInteger('trend')->default(0);
             $table->foreignId('subcategory_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

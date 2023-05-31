@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory ,SoftDeletes;
     protected $fillable=[
         'name',
         'description',
@@ -17,6 +19,15 @@ class Product extends Model
         'trend',
         'subcategory_id'
     ];
+    public function sluggable(): array{
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
+
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class);
@@ -30,6 +41,9 @@ class Product extends Model
     }
     public function wishlist(){
         return $this->hasMany(Wishlist::class);
+    }
+    public function packageItems(){
+        return $this->hasMany(Packageitem::class);
     }
 
 }
