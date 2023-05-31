@@ -16,6 +16,7 @@ class Order extends Model
         'phone',
         'address',
         'total_price',
+        'tracking_no',
     ];
 
     public function orderItems(){
