@@ -25,4 +25,11 @@ class Product extends Model
         return $this->hasMany(Orderitem::class);
     }
 
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class);
+    }
+
 }
