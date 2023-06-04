@@ -9,7 +9,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model
 {
-    use HasFactory ,SoftDeletes;
+    use HasFactory, Sluggable;
     protected $fillable=[
         'name',
         'description',
@@ -17,7 +17,8 @@ class Product extends Model
         'quantity',
         'image',
         'trend',
-        'subcategory_id'
+        'subcategory_id',
+        'slug'
     ];
     public function sluggable(): array{
         return [
