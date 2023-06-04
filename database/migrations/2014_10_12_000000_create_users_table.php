@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('address1')->nullable();
             $table->string('address2')->nullable();
             $table->string('phone')->nullable();
-            $table->foreignId('role_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
         });
