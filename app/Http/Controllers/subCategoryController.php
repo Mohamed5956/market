@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\StoreSubCategoryRequest;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
@@ -19,7 +21,7 @@ class subCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSubCategoryRequest $request)
     {
         $category = Subcategory::create($request->all());
         return response()->json(["data" => $category], 201);
@@ -37,7 +39,7 @@ class subCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreSubCategoryRequest $request, string $id)
     {
         $category = Subcategory::find($id);
         $new_info = $request->all();

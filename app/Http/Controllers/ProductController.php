@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductsRequest;
 use App\Models\Product;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceResponse;
-use Ramsey\Uuid\Type\Integer;
-use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -24,7 +22,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductsRequest $request)
     {
         $product = $request->all();
 
@@ -67,7 +65,7 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, string $id)
+    public function update(StoreProductsRequest $request, string $id)
     {
         $new_info = $request->all();
         $product = Product::find($id);
