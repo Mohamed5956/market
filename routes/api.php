@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PackageitemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +31,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//--------packages-----------------------
+//--------Packages && Packageitem-----------------------
 Route::apiResource('package',PackageController::class);
+Route::get('/packageitem/{packageId}', [PackageitemController::class, 'index']);
+Route::apiResource('packageitem',PackageitemController::class);
+
 

@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StorePackageRequest;
+use App\Http\Requests\UpdatePackageRequest;
 use App\Http\Resources\PackageResource;
 use App\Models\Package;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 
 class PackageController extends Controller
@@ -22,33 +23,15 @@ class PackageController extends Controller
         }else{
             return response()->json(['message' => 'No packages :(( '], 343);
             }
-
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : JsonResponse
+    public function store(StorePackageRequest $request) : JsonResponse
     {
-        $validator = Validator::make($request->all(),[
-            'name'=> 'required | min:3 | max:255',
-            'total_price'=>'required | decimal:2 '
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errorMessages = [];
-            // Loop through the validation errors
-            foreach ($errors->all() as $error) {
-                $errorMessages[] = $error;
-            }
-            return response()->json(['errors' => $errorMessages], 500);
-        }
-
-        $validated = $validator->validated();
-        $package = new Package($validated);
+        $package = new Package($request->all());
         $package->save();
-
         if ($package->save()) {
             return response()->json(new PackageResource($package), 201);
         } else {
@@ -64,47 +47,13 @@ class PackageController extends Controller
         //
 
     }
-
-
-    public function updateFromObject($object)
-    {
-        foreach ($object as $key => $value) {
-            $this->{$key} = $value;
-        }
-//        return response()->json(gettype([$object]));
-        return $object;
-    }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Package $package) :JsonResponse
+    public function update(UpdatePackageRequest $request, Package $package) :JsonResponse
     {
-        $validator = Validator::make($request->all(),[
-            'name'=> 'required | min:2 | max:255',
-            'total_price'=>'required | decimal:2 '
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errorMessages = [];
-            // Loop through the validation errors
-            foreach ($errors->all() as $error) {
-                $errorMessages[] = $error;
-            }
-            return response()->json(['errors' => $errorMessages], 500);
-        }
-
-        $validated = $validator->validated();
-        $updatedPackage = new Package($validated);
-        $package = $this->updateFromObject($updatedPackage);
-        $package->update();
-//        $package->update($updatedPackage);
-
-        return response()->json($package);
-
-
-        if ($package->update($updatedPackage)) {
+        $package->update($request->all());
+        if ($package->update($request->all())) {
             return response()->json(new PackageResource($package), 201);
         } else {
             return response()->json(['error' => 'Server Error'], 500);
