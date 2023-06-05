@@ -33,11 +33,11 @@ class StoreSubCategoryRequest extends FormRequest
     }
 
     public function messages(): array
-{
-    return [
-        'name.regex' => 'The name cannot start or be a number.',
-    ];
-}
+    {
+        return [
+            'name.regex' => 'The name cannot start or be a number.',
+        ];
+    }
 
     protected function failedValidation(Validator $validator)
     {
