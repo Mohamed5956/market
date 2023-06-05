@@ -9,7 +9,11 @@ use Cviebrock\EloquentSluggable\Sluggable;
 
 class Subcategory extends Model
 {
+<<<<<<< HEAD
     use HasFactory, Sluggable;
+=======
+    use HasFactory,Sluggable;
+>>>>>>> c0eb45382f766a0c412892929a5111f8cef0bc57
     protected $fillable = [
         'name',
         'category_id',
