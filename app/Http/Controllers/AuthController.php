@@ -29,14 +29,18 @@ class AuthController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
-            // Loop through the validation errors
+
             foreach ($errors->all() as $error) {
                 $errorMessages[] = $error;
             }
+
             return response()->json(['errors' => $errorMessages], 500);
         }
         $validated = $validator->validated();
-        $userRole = Role::where('name', 'user')->firstOrFail();
+        $userRole = Role::where('name', 'user')->first();
+        if (!$userRole) {
+            return response()->json(['errors' => 'Role not found. Please contact the administrator.'], 500);
+        }
         $user = new User();
         $user->name = $validated['name'];
         $user->lastName = $validated['lastName'];
@@ -47,6 +51,7 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
         return response()->json(['token' => $token], 201);
     }
+
 
     /**
      * @throws ValidationException
@@ -67,13 +72,12 @@ class AuthController extends Controller
             return response()->json(['errors' => $errorMessages], 500);
         }
         $credentials = $request->only('email', 'password');
+//        dd(Auth::attempt($credentials));
         if (!Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json(['errors' => ['email' => ['The provided credentials are incorrect.']]], 500);
         }
         $user = Auth::user();
-        $token = $user->createToken('token-name')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
         return response()->json(['token' => $token]);
     }
 

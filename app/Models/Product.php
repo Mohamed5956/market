@@ -9,7 +9,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model
 {
-    use HasFactory ,SoftDeletes;
+    use HasFactory ,SoftDeletes,Sluggable;
     protected $fillable=[
         'name',
         'description',
