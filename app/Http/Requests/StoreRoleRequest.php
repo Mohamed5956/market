@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRoleRequest extends FormRequest
@@ -24,8 +24,20 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:roles,name',
-            'description'=>'required',
+            'description' => 'required',
         ];
     }
 
+    /**
+     * Handle a failed validation attempt for an API request.
+     *
+     * @param  Validator  $validator
+     * @return void
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+        ], 400));
+    }
 }

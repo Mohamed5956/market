@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
@@ -37,23 +39,33 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+//    public function store(Store $request): JsonResponse
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required|unique:roles,name|max:255',
+//            'description' => 'required',
+//        ]);
+//        if ($validator->fails()) {
+//            $errors = $validator->errors();
+//            $errorMessages = [];
+//            // Loop through the validation errors
+//            foreach ($errors->all() as $error) {
+//                $errorMessages[] = $error;
+//            }
+//            return response()->json(['errors' => $errorMessages], 500);
+//        }
+//        $validated = $validator->validated();
+//        $role = new Role($validated);
+//        $role->save();
+//        if ($role->save()) {
+//            return response()->json(new RoleResource($role), 201);
+//        } else {
+//            return response()->json(['error' => 'Server Error'], 500);
+//        }
+//    }
+    public function store(StoreRoleRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles,name|max:255',
-            'description' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errorMessages = [];
-            // Loop through the validation errors
-            foreach ($errors->all() as $error) {
-                $errorMessages[] = $error;
-            }
-            return response()->json(['errors' => $errorMessages], 500);
-        }
-        $validated = $validator->validated();
-        $role = new Role($validated);
+        $role = new Role($request->all());
         $role->save();
         if ($role->save()) {
             return response()->json(new RoleResource($role), 201);
@@ -61,6 +73,7 @@ class RoleController extends Controller
             return response()->json(['error' => 'Server Error'], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -81,7 +94,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role): JsonResponse
+    public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
         $role->update($request->all());
         return response()->json(new RoleResource($role), 201);

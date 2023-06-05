@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateRoleRequest extends FormRequest
 {
@@ -25,5 +27,17 @@ class UpdateRoleRequest extends FormRequest
             'name' => 'required|unique:roles,name',
             'description'=>'required',
         ];
+    }
+    /**
+     * Handle a failed validation attempt for an API request.
+     *
+     * @param  Validator  $validator
+     * @return void
+     */
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+        ], 400));
     }
 }
