@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
@@ -28,5 +29,17 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|string|email|unique:users,email|max:255',
             'password' => 'required|string|min:8',
         ];
+    }
+    /**
+     * Handle a failed validation attempt for an API request.
+     *
+     * @param  Validator  $validator
+     * @return void
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+        ], 400));
     }
 }
