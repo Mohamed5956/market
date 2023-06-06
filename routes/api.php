@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\subCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -23,6 +26,10 @@ use App\Http\Controllers\OrderItemController;
 
 Route::apiResource('role',RoleController::class);
 
+Route::group(['middleware' => 'admin'], function () {
+    // Routes that require admin role
+});
+
 Route::group(['middleware' => 'authenticated'], function () {
     // Routes that require any authenticated user
 });
@@ -34,3 +41,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('order',OrderController::class);
 Route::apiResource('orderItem',OrderItemController::class);
+
+Route::apiResource('products', ProductController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('subCategories', subCategoryController::class);

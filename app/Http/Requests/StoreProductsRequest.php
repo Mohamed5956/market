@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoreOrderRequest extends FormRequest
+class StoreProductsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,25 +24,20 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'user_id' => 'required',
-            'phone' => 'required',
-            'address' => 'required|string',
-            'total_price' => 'required',
-            'tracking_no' => 'required|integer',
+            'name' => ['required', 'regex:/^[^0-9][a-zA-Z0-9]*$/'],
+            'description'  => ['nullable','regex:/^[^0-9][a-zA-Z0-9]*$/'],
+            'price'  => 'required | integer',
+            'quantity'  => 'required | integer',
+            'trend' => 'required | integer',
+            'subcategory_id' => 'required | integer',
+            'productImage' => 'nullable|mimes:jpeg,png'
         ];
     }
-    public function failedValidation(Validator $validator)
+
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success' =>false,
-            'message' =>"validation errors",
-            'data' =>$validator->errors()
-        ],
-        400
-    ));
-        
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

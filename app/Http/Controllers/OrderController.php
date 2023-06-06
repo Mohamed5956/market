@@ -60,6 +60,7 @@ class OrderController extends Controller
         //
         //
         $order->delete();
-        return new Response('deleted order Successfully',204);
+        return new Response('deleted order Successfully',200);
+        
     }
 }

@@ -26,7 +26,7 @@ class UpdateOrderRequest extends FormRequest
         return [
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email|max:255',
+            'email' => 'required|string|email|max:255',
             'user_id' => 'required',
             'phone' => 'required',
             'address' => 'required|string',
