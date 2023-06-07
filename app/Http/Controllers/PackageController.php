@@ -29,57 +29,26 @@ class PackageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePackageRequest $request) : JsonResponse
+    public function store(StorePackageRequest $request)
     {
-        $package = new Package($request->all());
-        $package->save();
-//        dd($package->id);
-        $input=$request->data;
-         foreach ($input as &$i){
-//             dd(gettype($i));
-
-           array_push($i, ['package_id'=> '12']);
-         }
-//        $input["package_id"]=$package->id;
-        dd($input);
-
-        $packageItem = new Packageitem($input);
-        dd($packageItem);
-
-
-        $packageItem->save();
-
-        if ($package->save() && $packageItem->save()) {
+        $package = Package::create([
+            'name' => $request->name,
+            'total_price' => $request->total_price,
+        ]);
+        $packageItems = $request->package_items;
+        foreach ($packageItems as $item) {
+            $package->packageItems()->create([
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+            ]);
+        }
+        if ($package->save()) {
             return response()->json(new PackageResource($package), 201);
         } else {
             return response()->json(['error' => 'Server Error'], 500);
             }
     }
-
-
-
-//    public function store(StorePackageRequest $request): JsonResponse
-//    {
-//        $package = new Package($request->all());
-//        $package->save();
-//
-//        $input = $request->data;
-//        foreach ($input as $i) {
-//            $i['package_id'] = $package->id;
-//        }
-//
-//        $packageItem = new Packageitem($input);
-//        $packageItem->save();
-//
-//        dd($input);
-//
-//        if ($package->save() && $packageItem->save()) {
-//            return response()->json(new PackageResource($package), 201);
-//        } else {
-//            return response()->json(['error' => 'Server Error'], 500);
-//        }
-//    }
-
     /**
      * Display the specified resource.
      */

@@ -34,10 +34,15 @@ class PackageitemController extends Controller
      */
     public function store(StorePackageitemRequest $request)
     {
-        $packageitem = new Packageitem($request->all());
-        $packageitem->save();
-        if ($packageitem->save()) {
-            return response()->json(new PackageitemResource($packageitem), 201);
+        $packageItem = PackageItem::create([
+            'package_id' => $request->package_id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        if ($packageItem->save()) {
+            return response()->json(new PackageResource($packageItem), 201);
         } else {
             return response()->json(['error' => 'Server Error'], 500);
         }

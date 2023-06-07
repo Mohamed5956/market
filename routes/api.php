@@ -9,6 +9,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PackageitemController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +22,11 @@ use App\Http\Controllers\PackageitemController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// Route::group(['middleware' => 'admin'], function () {
+//     // Routes that require admin role
+//     Route::apiResource('role',RoleController::class);
+// });
+
 Route::apiResource('role',RoleController::class);
 
 Route::group(['middleware' => 'admin'], function () {
@@ -39,6 +47,8 @@ Route::apiResource('packages',PackageController::class);
 Route::get('/packageitems/{packageId}', [PackageitemController::class, 'index']);
 Route::apiResource('packageitems',PackageitemController::class);
 
+Route::apiResource('order',OrderController::class);
+Route::apiResource('orderItem',OrderItemController::class);
 
 Route::apiResource('products', ProductController::class);
 Route::apiResource('categories', CategoryController::class);
