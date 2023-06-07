@@ -17,7 +17,8 @@ class Product extends Model
         'quantity',
         'image',
         'trend',
-        'subcategory_id'
+        'subcategory_id',
+        'slug'
     ];
     public function sluggable(): array{
         return [

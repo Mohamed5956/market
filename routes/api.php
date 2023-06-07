@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\subCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -32,8 +35,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //--------Packages && Packageitem-----------------------
-Route::apiResource('package',PackageController::class);
-Route::get('/packageitem/{packageId}', [PackageitemController::class, 'index']);
-Route::apiResource('packageitem',PackageitemController::class);
+Route::apiResource('packages',PackageController::class);
+Route::get('/packageitems/{packageId}', [PackageitemController::class, 'index']);
+Route::apiResource('packageitems',PackageitemController::class);
 
 
+Route::apiResource('products', ProductController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('subCategories', subCategoryController::class);

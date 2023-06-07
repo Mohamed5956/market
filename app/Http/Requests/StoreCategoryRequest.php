@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateRoleRequest extends FormRequest
+class StoreCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,27 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'unique:roles,name',
-            'description'=>'required',
+            'name' => ['required', 'regex:/^[^0-9][a-zA-Z0-9]*$/'],
         ];
     }
-    /**
-     * Handle a failed validation attempt for an API request.
-     *
-     * @param  Validator  $validator
-     * @return void
-     */
-    protected function failedValidation(Validator $validator): void
+
+    public function messages(): array
     {
-        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
+        return [
+            'name.regex' => 'The name cannot start or be a number.',
+        ];
+    }
+
+    public function attributes() : array
+    {
+        return [
+            'name' => 'Category name',
+        ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
             'errors' => $validator->errors(),
-        ], 400));
+        ], 422));
     }
 }
