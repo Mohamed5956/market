@@ -56,12 +56,12 @@ class User extends Authenticatable
     public function wishlist(){
         return $this->hasMany(Wishlist::class);
     }
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(Role::class);
     }
     public function hasRole($roleName)
     {
-        return $this->roles()->where('name', $roleName)->exists();
+        return $this->role()->where('name', $roleName)->exists();
     }
 }

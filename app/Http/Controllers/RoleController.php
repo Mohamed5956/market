@@ -21,7 +21,7 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         if(count($roles)>0){
-            return response()->json(['roles' => $roles], 200);
+            return response()->json(['data' => $roles], 200);
         }else{
             return response()->json(['message' => 'No Roles Yet add one using POST Method at End Point /role'], 343);
         }
