@@ -17,10 +17,10 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
-        $packages= Package::all();
+        $packages=Package::with('packageItems')->get();
+//        $packages= PackageResource::collection(Package::all());
         if(count($packages)>0){
-            return response()->json(['packages' => $packages], 200);
+            return response()->json($packages, 200);
         }else{
             return response()->json(['message' => 'No packages :(( '], 343);
             }
@@ -55,6 +55,7 @@ class PackageController extends Controller
     public function show(Package $package)
     {
         //
+
 
     }
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\PackageResource;
 class PackageitemResource extends JsonResource
 {
     public function toArray($request)
@@ -19,7 +19,8 @@ class PackageitemResource extends JsonResource
             'package_id'=>$this->package_id,
             'quantity'=>$this->quantity,
             'price'=>$this->price,
-            // Add other attributes as needed
+//            'package'=> new PackageResource($this->package),
+        // Add other attributes as needed
         ];
     }
 

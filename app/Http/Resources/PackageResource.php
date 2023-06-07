@@ -17,6 +17,7 @@ class PackageResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'total_price'=>$this->total_price,
+//            'package_item'=>new PackageitemResource($this->packageItems),
             // Add other attributes as needed
         ];
     }

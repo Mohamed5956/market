@@ -11,11 +11,12 @@ class PackageitemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($packageId)
+    public function index()
     {
-        $packageitem=Packageitem::findorfail($packageId);
+//        $packageitem= Packageitem::all();
+        $packageitem= PackageitemResource::collection(Packageitem::all());
         if(count($packageitem)>0){
-            return response()->json(['packages' => $packageitem], 200);
+            return response()->json($packageitem, 200);
         }else{
             return response()->json(['message' => 'No packageitem :(( '], 343);
         }
@@ -27,6 +28,16 @@ class PackageitemController extends Controller
     public function create()
     {
         //
+    }
+
+    public function list_items($packageId){
+//        dd("list");
+        $packageitem=Packageitem::findorfail($packageId);
+        if(count($packageitem)>0){
+            return response()->json(['packages' => $packageitem], 200);
+        }else{
+            return response()->json(['message' => 'No packageitem :(( '], 343);
+        }
     }
 
     /**
@@ -42,7 +53,7 @@ class PackageitemController extends Controller
         ]);
 
         if ($packageItem->save()) {
-            return response()->json(new PackageResource($packageItem), 201);
+            return response()->json(new PackageitemResource($packageItem), 201);
         } else {
             return response()->json(['error' => 'Server Error'], 500);
         }
