@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Packageitem;
 use App\Http\Requests\StorePackageitemRequest;
 use App\Http\Requests\UpdatePackageitemRequest;
-
+use App\Http\Resources\PackageitemResource;
 class PackageitemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($packageId)
     {
-        //
+        $packageitem=Packageitem::findorfail($packageId);
+        if(count($packageitem)>0){
+            return response()->json(['packages' => $packageitem], 200);
+        }else{
+            return response()->json(['message' => 'No packageitem :(( '], 343);
+        }
     }
 
     /**
@@ -29,7 +34,18 @@ class PackageitemController extends Controller
      */
     public function store(StorePackageitemRequest $request)
     {
-        //
+        $packageItem = PackageItem::create([
+            'package_id' => $request->package_id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        if ($packageItem->save()) {
+            return response()->json(new PackageResource($packageItem), 201);
+        } else {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
     }
 
     /**
@@ -53,7 +69,12 @@ class PackageitemController extends Controller
      */
     public function update(UpdatePackageitemRequest $request, Packageitem $packageitem)
     {
-        //
+        $packageitem->update($request->all());
+        if ($packageitem->update($request->all())) {
+            return response()->json(new PackageitemResource($packageitem), 201);
+        } else {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
     }
 
     /**
@@ -61,6 +82,11 @@ class PackageitemController extends Controller
      */
     public function destroy(Packageitem $packageitem)
     {
-        //
+        $packageitem->delete();
+        if ($packageitem->delete()) {
+            return response()->json(['message' => 'deleted successfully'], 203);
+        } else {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
     }
 }

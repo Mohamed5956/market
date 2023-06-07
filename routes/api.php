@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PackageitemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,6 +41,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//--------Packages && Packageitem-----------------------
+Route::apiResource('packages',PackageController::class);
+Route::get('/packageitems/{packageId}', [PackageitemController::class, 'index']);
+Route::apiResource('packageitems',PackageitemController::class);
 
 Route::apiResource('order',OrderController::class);
 Route::apiResource('orderItem',OrderItemController::class);
