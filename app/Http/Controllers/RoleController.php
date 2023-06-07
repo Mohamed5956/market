@@ -20,9 +20,8 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-//        dd($roles);
         if(count($roles)>0){
-            return response()->json(new RoleResource($roles), 200);
+            return response()->json(['data' => $roles], 200);
         }else{
             return response()->json(['message' => 'No Roles Yet add one using POST Method at End Point /role'], 343);
         }

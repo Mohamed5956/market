@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    use HasFactory;
+
     protected $fillable=[
         'id',
         'name',
         'description'
     ];
-    use HasFactory;
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
 }
