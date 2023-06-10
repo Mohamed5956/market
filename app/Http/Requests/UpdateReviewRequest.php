@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCartRequest extends FormRequest
+class UpdateReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,23 +23,28 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id'=>'required',
-            'prod_qty'=>'required'
+//            'product_id' => 'required|exists:products,id',
+            'rating' => 'numeric|min:0|max:10',
+            'comment' => 'string'
         ];
     }
 
-    public function messages(): array
+
+    public function messages()
     {
         return [
-            'product_id'=>'product id can not be empty',
-            'prod_qty'=>'Quantity can not be none'
+//            'product_id'=>"Product id must be provided",
+            'rating'=>"Must be a number between 0 to 10",
+            'comment'=>"Must be a text"
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+
+    public function failedValidation(Validator $validator)
     {
         throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
             'errors' => $validator->errors(),
         ], 400));
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,10 +20,15 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next): mixed
     {
-        if (Auth::check() && Auth::user()->hasRole('admin')) {
+
+//        dd(Auth::user());
+//        $users = User::with('roles')->get();
+//        dd($users);
+        $user = User::where('id',Auth::user()->id)->with('role')->first();
+        if (Auth::check() && $user->role->name=='admin') {
             return $next($request);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['error' => 'Unauthorized'], 403);
     }
 }
