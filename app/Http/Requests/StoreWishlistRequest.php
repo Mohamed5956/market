@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePackageitemRequest extends FormRequest
+class StoreWishlistRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,17 @@ class StorePackageitemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required',
-            'package_id'=>'required',
-            'quantity'=>'required',
-            'price'=>'required'
+            "product_id" => 'required'
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'product_id' => 'product id can not be empty',
+        ];
+    }
+
 
     protected function failedValidation(Validator $validator)
     {

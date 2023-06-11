@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
-class StorePackageitemRequest extends FormRequest
+class StoreOrderItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +25,20 @@ class StorePackageitemRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-            'package_id'=>'required',
-            'quantity'=>'required',
-            'price'=>'required'
+            'quantity' => 'required',
+            'price' => 'required',
+            'order_id' => 'required',
         ];
     }
-
-    protected function failedValidation(Validator $validator)
+    public function failedValidation(Validator $validator)
     {
-        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-        ], 400));
+        throw new HttpResponseException(response()->json([
+            'success' =>false,
+            'message' =>"validation errors",
+            'data' =>$validator->errors()
+        ],
+        400
+    ));
+        
     }
 }
