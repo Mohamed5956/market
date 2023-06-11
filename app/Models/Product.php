@@ -40,7 +40,7 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
     public function wishlist(){
-        return $this->hasMany(Wishlist::class);
+        return $this->hasMany(test::class);
     }
     public function packageItems(){
         return $this->hasMany(Packageitem::class);
