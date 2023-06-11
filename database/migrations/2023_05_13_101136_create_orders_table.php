@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('total_price');
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('status',['Processing','On delivery','Delivered']);
+            $table->string('tracking_no')->unique();
             $table->timestamps();
         });
     }

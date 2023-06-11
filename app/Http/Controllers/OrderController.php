@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use Illuminate\Http\Response;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
@@ -28,12 +29,30 @@ class OrderController extends Controller
 //        return OrderResource::collection(Order::all());
     }
 
+    public function index_user(){
+        $id=Auth::id();
+        $order = Order::where('user_id', '=', $id)->get();
+
+        if (count($order) > 0) {
+            return response()->json([ 'data' => $order ], 200);
+        }else{
+            return response()->json(['error' => 'No Data Found.'], 400);
+        }
+    }
+    public function order_user($order_id){
+        $order = Order::where('id', '=', $order_id)->first();
+        dd($order->user());
+//        $user=User::with('orders')->get();
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreOrderRequest $request)
     {
         //
+        $tracking_no = 'Order' . time();
         $order = Order::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
@@ -41,9 +60,9 @@ class OrderController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'total_price' => $request->total_price,
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
+            'tracking_no'=>$tracking_no
         ]);
-//        $order = Order::create($request->all());
         $orderItems = $request->order_items;
         foreach ($orderItems as $item) {
             $order->orderItems()->create([
@@ -52,7 +71,6 @@ class OrderController extends Controller
                 'price' => $item['price'],
             ]);
         }
-//        return new  OrderResource($Order);
         if ($order->save()) {
             return response()->json(new OrderResource($order), 201);
         } else {
