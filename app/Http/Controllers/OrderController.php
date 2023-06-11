@@ -18,7 +18,14 @@ class OrderController extends Controller
     public function index()
     {
         //
-        return OrderResource::collection(Order::all());
+        $orders=Order::with('orderItems')->get();
+        if(count($orders)>0){
+            return response()->json($orders, 200);
+        }else{
+            return response()->json(['message' => 'No orders :(( '], 343);
+        }
+
+//        return OrderResource::collection(Order::all());
     }
 
     /**
@@ -27,9 +34,31 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         //
-        $Order = Order::create($request->all());
+        $order = Order::create([
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'total_price' => $request->total_price,
+            'user_id' => $request->user_id
+        ]);
+//        $order = Order::create($request->all());
+        $orderItems = $request->order_items;
+        foreach ($orderItems as $item) {
+            $order->orderItems()->create([
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+            ]);
+        }
+//        return new  OrderResource($Order);
+        if ($order->save()) {
+            return response()->json(new OrderResource($order), 201);
+        } else {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
 
-        return new  OrderResource($Order);
     }
 
     /**
@@ -38,6 +67,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         //
+
         return new OrderResource($order);
     }
 
@@ -48,7 +78,7 @@ class OrderController extends Controller
     {
         //
         $order->update($request->all());
-        
+
         return new  OrderResource($order);
     }
 
@@ -61,6 +91,6 @@ class OrderController extends Controller
         //
         $order->delete();
         return new Response('deleted order Successfully',200);
-        
+
     }
 }

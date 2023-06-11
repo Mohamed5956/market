@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('total_price');
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->enum('status',['Processing','On delivery','Delivered']);
             $table->timestamps();
         });
     }

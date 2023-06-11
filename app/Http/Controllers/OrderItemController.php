@@ -29,9 +29,21 @@ class OrderItemController extends Controller
     public function store(StoreOrderItemRequest $request)
     {
         //
-        $Orderitem = Orderitem::create($request->all());
+        $orderItem = Orderitem::create([
+            'order_id' => $request->package_id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
 
-        return new  OrderItemResource($Orderitem);
+        if ($orderItem->save()) {
+            return response()->json(new OrderItemResource($orderItem), 201);
+        } else {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
+//        $Orderitem = Orderitem::create($request->all());
+//
+//        return new  OrderItemResource($Orderitem);
     }
 
     /**
@@ -51,7 +63,7 @@ class OrderItemController extends Controller
     {
         //
         $Orderitem->update($request->all());
-        
+
         return new  OrderItemResource($Orderitem);
     }
 
