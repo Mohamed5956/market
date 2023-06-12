@@ -27,19 +27,11 @@ use App\Http\Controllers\OrderItemController;
 //     Route::apiResource('role',RoleController::class);
 // });
 
-<<<<<<< HEAD
-//Route::apiResource('role',RoleController::class);
-
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::apiResource('role',RoleController::class);
-});
-=======
 //Route::apiResource('role',RoleController::class)->middleware('auth:sanctum');
->>>>>>> 62aa05932eda299d0ce2472af80d025b8dd17513
 
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
-    Route::apiResource('role',RoleController::class);
+    Route::apiResource('roles',RoleController::class);
 });
 //Route::apiResource('role',RoleController::class)->middleware(['auth:sanctum','admin']);
 Route::group(['middleware' => 'auth:sanctum'], function () {

@@ -25,7 +25,7 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'name' => 'unique:roles,name',
-            'description'=>'required',
+            'description'=>'',
         ];
     }
     /**
