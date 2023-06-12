@@ -27,7 +27,7 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'total_price' => $this->total_price,
             'tracking_no' => $this->tracking_no,
-            'user_id' => new UserResource($this->whenLoaded('user')),
+//            'user_id' => new UserResource($this->whenLoaded('user')),
 
 //            'orderItems'=>[
 //                'item' => new OrderItemResource($this->orderItems)
