@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use App\Http\Resources\ReviewResource;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -58,9 +59,12 @@ class ReviewController extends Controller
             }else{
                 $review['rating'] = $request->rating;
             }
+
             $new_review = Review::create($review);
+            $user_review = Review::with('user', 'product')->get();
+            $review_collection = ReviewResource::collection($user_review);
             $data = $this->list_review((int)$request->product_id);
-            return response()->json(['new_review'=>$new_review, 'message'=>'Review add successfully', 'data'=>$data]);
+            return response()->json(['message'=>'Review add successfully', 'new_review'=>$review_collection,  'data'=>$data]);
     }
 
     /**
@@ -98,6 +102,5 @@ class ReviewController extends Controller
     {
         $review_to_delete = Review::where('user_id', Auth::id())->where('product_id', (int)$id)->first()->delete();
         return response()->json(['data' => $this->list_review((int)$id), 'message' => 'Item deleted'], 200);
-
     }
 }
