@@ -31,7 +31,7 @@ class StoreOrderRequest extends FormRequest
             'phone' => 'required',
             'address' => 'required|string',
             'total_price' => 'required',
-            'tracking_no' => 'required|integer',
+//            'tracking_no' => 'required|integer',
         ];
     }
     public function failedValidation(Validator $validator)
@@ -43,6 +43,6 @@ class StoreOrderRequest extends FormRequest
         ],
         400
     ));
-        
+
     }
 }
