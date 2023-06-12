@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Order;
+use App\Models\Orderitem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
@@ -24,7 +26,13 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'total_price' => $this->total_price,
             'tracking_no' => $this->tracking_no,
-            'user' => new UserResource($this->user)
+            'user' => new UserResource($this->user),
+//            'orderItems'=>[
+//                'item' => new OrderItemResource($this->orderItems)
+//            ],
+            'orderItems'=> OrderItemResource::collection(Orderitem::all())
+
+
         ];
     }
 }

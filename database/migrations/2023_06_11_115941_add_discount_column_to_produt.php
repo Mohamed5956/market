@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->integer('tracking_no')->unique();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('discount')->after('price')->nullable();
+
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn("tracking_no");
+        Schema::table('produt', function (Blueprint $table) {
+            //
         });
     }
 };
