@@ -73,11 +73,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
-
-        $x=$order->orderItems();
-//        dd($x);
-        return new OrderResource($order);
+        $data = Order::with('user', 'orderItems.product')->findOrFail($order->id);
+        return response()->json(['data'=>$data]);
     }
 
     /**
