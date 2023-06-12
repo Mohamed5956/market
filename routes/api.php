@@ -52,10 +52,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/wishlist/delete', [WishlistController::class, 'delete_all']);
     Route::apiResource('wishlist', WishlistController::class);
 //    ORDER
-    Route::apiResource('order',OrderController::class);
+//    Route::apiResource('order',OrderController::class);
     Route::apiResource('orderItem',OrderItemController::class);
 
 });
+Route::apiResource('order',OrderController::class);
+
 
 
 

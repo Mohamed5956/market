@@ -25,20 +25,9 @@ class OrderController extends Controller
         }else{
             return response()->json(['message' => 'No orders :(( '], 343);
         }
-
-//        return OrderResource::collection(Order::all());
     }
 
-    public function index_user(){
-        $id=Auth::id();
-        $order = Order::where('user_id', '=', $id)->get();
 
-        if (count($order) > 0) {
-            return response()->json([ 'data' => $order ], 200);
-        }else{
-            return response()->json(['error' => 'No Data Found.'], 400);
-        }
-    }
     public function order_user($order_id){
         $order = Order::where('id', '=', $order_id)->first();
         dd($order->user());
@@ -84,9 +73,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
-
-        return new OrderResource($order);
+        $data = Order::with('user', 'orderItems.product')->findOrFail($order->id);
+        return response()->json(['data'=>$data]);
     }
 
     /**
