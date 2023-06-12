@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -36,6 +37,16 @@ class HomeController extends Controller
     public function Categories(){
         $categories = Category::All();
         return response()->json(["Categories" => $categories], 200);
+    }
+
+    public function index_user(){
+        $id=Auth::id();
+        $order = Order::where('user_id', '=', $id)->get();
+        if (count($order) > 0) {
+            return response()->json([ 'data' => $order ], 200);
+        }else{
+            return response()->json(['error' => 'No Data Found.'], 400);
+        }
     }
     /**
      * Show the form for creating a new resource.

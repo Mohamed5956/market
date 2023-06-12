@@ -27,21 +27,10 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-// Route::group(['middleware' => 'admin'], function () {
-//     // Routes that require admin role
-//     Route::apiResource('role',RoleController::class);
-// });
-
-
-//Route::group(['middleware' => 'auth:sanctum'], function () {
-//    Route::apiResource('role',RoleController::class);
-//});
-
-//Route::apiResource('role',RoleController::class)->middleware('auth:sanctum');
 
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
-    Route::apiResource('role',RoleController::class);
+    Route::apiResource('roles',RoleController::class);
     Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
     Route::apiResource('products', ProductController::class);
@@ -63,10 +52,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/wishlist/delete', [WishlistController::class, 'delete_all']);
     Route::apiResource('wishlist', WishlistController::class);
 //    ORDER
-    Route::apiResource('order',OrderController::class);
+//    Route::apiResource('order',OrderController::class);
     Route::apiResource('orderItem',OrderItemController::class);
 
 });
+Route::apiResource('order',OrderController::class);
+
 
 
 
