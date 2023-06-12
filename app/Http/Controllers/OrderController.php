@@ -21,9 +21,9 @@ class OrderController extends Controller
         //
         $orders=Order::with('orderItems')->get();
         if(count($orders)>0){
-            return response()->json($orders, 200);
+            return response()->json(["data" => $orders], 200);
         }else{
-            return response()->json(['message' => 'No orders :(( '], 343);
+            return response()->json(['error' => 'No orders :(( ', 'data' => []],  200);
         }
     }
 
