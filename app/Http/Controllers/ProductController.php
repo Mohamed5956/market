@@ -55,10 +55,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-        return response()->json(["data" => $product], 200);
+        $data = Product::with('reviews')->findOrFail($product->id);
+        return response()->json(['data'=>$data]);
     }
 
     /**
