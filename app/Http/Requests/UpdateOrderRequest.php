@@ -31,7 +31,7 @@ class UpdateOrderRequest extends FormRequest
             'phone' => 'required',
             'address' => 'required|string',
             'total_price' => 'required',
-            'tracking_no' => 'required',
+//            'tracking_no' => 'required',
         ];
     }
     public function failedValidation(Validator $validator)
@@ -43,6 +43,6 @@ class UpdateOrderRequest extends FormRequest
         ],
         400
     ));
-        
+
     }
 }
