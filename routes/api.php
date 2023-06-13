@@ -53,10 +53,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('wishlist', WishlistController::class);
 //    ORDER
 //    Route::apiResource('order',OrderController::class);
-    Route::apiResource('orderItem',OrderItemController::class);
+//    Route::apiResource('orderItem',OrderItemController::class);
 
 });
 Route::apiResource('order',OrderController::class);
+Route::apiResource('orderItem',OrderItemController::class);
+
 
 
 

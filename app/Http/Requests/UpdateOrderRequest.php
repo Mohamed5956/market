@@ -27,11 +27,11 @@ class UpdateOrderRequest extends FormRequest
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'user_id' => 'required',
+            'user_id' => '',
             'phone' => 'required',
             'address' => 'required|string',
-            'total_price' => 'required',
-            'tracking_no' => 'required',
+            'total_price' => '',
+            'tracking_no' => '',
         ];
     }
     public function failedValidation(Validator $validator)
@@ -43,6 +43,6 @@ class UpdateOrderRequest extends FormRequest
         ],
         400
     ));
-        
+
     }
 }

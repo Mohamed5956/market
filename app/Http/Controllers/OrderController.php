@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -82,9 +83,9 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+//        $user = Auth::user();
+//        dd($user);
         $order->update($request->all());
-
         return new  OrderResource($order);
     }
 
@@ -93,10 +94,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
-        //
         $order->delete();
         return new Response('deleted order Successfully',200);
-
     }
 }
