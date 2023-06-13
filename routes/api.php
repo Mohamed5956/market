@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\subCategoryController;
@@ -36,9 +37,8 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('subcategories', subCategoryController::class);
-
+    Route::get('/dashboard',[DashboardController::class,'analysis']);
 });
-
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Cart
