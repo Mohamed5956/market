@@ -34,11 +34,16 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::apiResource('roles',RoleController::class);
     Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('subcategories', subCategoryController::class);
+    // Route::apiResource('products', ProductController::class);
+    // Route::apiResource('categories', CategoryController::class);
+    // Route::apiResource('subcategories', subCategoryController::class);
     Route::get('/dashboard',[DashboardController::class,'analysis']);
 });
+
+Route::apiResource('products', ProductController::class);
+Route::apiResource('subcategories', subCategoryController::class);
+Route::apiResource('categories', CategoryController::class);
+
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Cart
@@ -52,11 +57,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/wishlist/delete', [WishlistController::class, 'delete_all']);
     Route::apiResource('wishlist', WishlistController::class);
 //    ORDER
-//    Route::apiResource('order',OrderController::class);
+    Route::apiResource('order',OrderController::class);
     Route::apiResource('orderItem',OrderItemController::class);
 
 });
-Route::apiResource('order',OrderController::class);
 
 
 
