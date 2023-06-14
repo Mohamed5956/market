@@ -24,12 +24,13 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'firstName' => 'string|max:255',
+            'lastName' => 'string|max:255',
+            'email' => 'string|email|max:255',
             'user_id' => '',
-            'phone' => 'required',
-            'address' => 'required|string',
+            'phone' => '',
+            'address' => 'string',
+            'status' => '',
             'total_price' => '',
             'tracking_no' => '',
         ];

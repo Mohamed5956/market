@@ -16,6 +16,7 @@ use App\Http\Controllers\PackageitemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -52,12 +53,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/wishlist/delete', [WishlistController::class, 'delete_all']);
     Route::apiResource('wishlist', WishlistController::class);
 //    ORDER
-//    Route::apiResource('order',OrderController::class);
-//    Route::apiResource('orderItem',OrderItemController::class);
+    Route::apiResource('order',OrderController::class);
+    Route::apiResource('orderItem',OrderItemController::class);
 
 });
-Route::apiResource('order',OrderController::class);
-Route::apiResource('orderItem',OrderItemController::class);
+//Route::apiResource('order',OrderController::class);
+//Route::apiResource('orderItem',OrderItemController::class);
 
 
 
@@ -69,6 +70,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/home/packages', [HomeController::class, 'Packages']);
 Route::get('/home/products', [HomeController::class, 'Products']);
 Route::get('/home/categories', [HomeController::class, 'Categories']);
+//-------Get ALL Users------
+Route::get('users', [UserController::class, 'index']);
+
 
 
 
