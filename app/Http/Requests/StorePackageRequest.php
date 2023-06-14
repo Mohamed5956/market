@@ -24,7 +24,7 @@ class StorePackageRequest extends FormRequest
     {
         return [
             'name'=> 'required | min:3 | max:255',
-            'total_price'=>'required | decimal:2 '
+            'total_price'=>'required '
         ];
     }
     protected function failedValidation(Validator $validator)
