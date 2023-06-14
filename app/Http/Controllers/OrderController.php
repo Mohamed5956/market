@@ -42,67 +42,6 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
-        $user = Auth::user();
-        $userController = new UserController();
-//        dd($user);
-        $tracking_no = 'Order' . time();
-//        dd($user->phone);
-        if($user && $user->phone){
-//            dd($user->phone);
-            $order = Order::create([
-                'name' => $user->firstName,
-                'lastName' => $user->lastName,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'address' => $user->address,
-                'total_price' => $request->total_price,
-                'user_id' => $user->id,
-                'tracking_no' => $tracking_no
-            ]);
-        }elseif ($user){
-//            dd($user);
-            $userController->updated();
-//            $user->updated($request->all());
-//            $order = Order::create([
-//                'name' => $user->firstName,
-//                'lastName' => $user->lastName,
-//                'email' => $user->email,
-//                'phone' => $user->phone,
-//                'address' => $user->address,
-//                'total_price' => $request->total_price,
-//                'user_id' => $user->id,
-//                'tracking_no' => $tracking_no
-//            ]);
-        dd($user);
-        }
-        else {
-            dd("order");
-            $order = Order::create([
-                'firstName' => $request->firstName,
-                'lastName' => $request->lastName,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'total_price' => $request->total_price,
-                'user_id' => $request->user_id,
-                'tracking_no' => $tracking_no
-            ]);
-        }
-        $orderItems = $request->order_items;
-        foreach ($orderItems as $item) {
-            $order->orderItems()->create([
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-            ]);
-        }
-        if ($order->save()) {
-            return response()->json(new OrderResource($order), 201);
-        } else {
-            return response()->json(['error' => 'Server Error'], 500);
-        }
-
     }
 
     /**

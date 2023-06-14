@@ -27,10 +27,10 @@ class ProductController extends Controller
         $product = $request->all();
 
         // Save the image first
-        if($request->hasFile("productImage"))
+        if($request->hasFile("image"))
         {
             try{
-                $image = $request->file("productImage");
+                $image = $request->file("image");
                 $image_name = "public/images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
 
@@ -71,10 +71,10 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         // Save the image first
-        if($request->hasFile("productImage"))
+        if($request->hasFile("image"))
         {
             try{
-                $image = $request->file("productImage");
+                $image = $request->file("image");
                 $image_name = "public/images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
                 $product['image'] = $image_name;
