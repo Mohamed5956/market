@@ -16,6 +16,7 @@ use App\Http\Controllers\PackageitemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -29,15 +30,25 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+Route::apiResource('products', ProductController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('subcategories', subCategoryController::class);
+
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
     Route::apiResource('roles',RoleController::class);
     Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
-    // Route::apiResource('products', ProductController::class);
-    // Route::apiResource('categories', CategoryController::class);
-    // Route::apiResource('subcategories', subCategoryController::class);
+//    Route::apiResource('products', ProductController::class);
+//    Route::apiResource('categories', CategoryController::class);
+//    Route::apiResource('subcategories', subCategoryController::class);
+    //    ORDER
+    Route::apiResource('order',OrderController::class);
+    Route::apiResource('orderItem',OrderItemController::class);
+    //    Dashboard
     Route::get('/dashboard',[DashboardController::class,'analysis']);
+    Route::get('/dashboard/most-sold',[DashboardController::class,'getMostSoldProducts']);
+    Route::get('/dashboard/user-pay',[DashboardController::class,'getMostUserPay']);
 });
 
 Route::apiResource('products', ProductController::class);
@@ -56,11 +67,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //    WISHLIST
     Route::delete('/wishlist/delete', [WishlistController::class, 'delete_all']);
     Route::apiResource('wishlist', WishlistController::class);
-//    ORDER
-    Route::apiResource('order',OrderController::class);
-    Route::apiResource('orderItem',OrderItemController::class);
+//    Store Order
+    Route::post('/home/orders', [HomeController::class, 'store_order']);
 
 });
+//Route::apiResource('order',OrderController::class);
+//Route::apiResource('orderItem',OrderItemController::class);
+
 
 
 
@@ -71,6 +84,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/home/packages', [HomeController::class, 'Packages']);
 Route::get('/home/products', [HomeController::class, 'Products']);
 Route::get('/home/categories', [HomeController::class, 'Categories']);
+
+//-------Get ALL Users------
+Route::get('users', [UserController::class, 'index']);
+
 
 
 

@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Http\Controllers\UserController;
 
 class OrderController extends Controller
 {
@@ -21,9 +23,9 @@ class OrderController extends Controller
         //
         $orders=Order::with('orderItems')->get();
         if(count($orders)>0){
-            return response()->json($orders, 200);
+            return response()->json(["data" => $orders], 200);
         }else{
-            return response()->json(['message' => 'No orders :(( '], 343);
+            return response()->json(['error' => 'No orders :(( ', 'data' => []],  200);
         }
     }
 
@@ -40,32 +42,6 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
-        $tracking_no = 'Order' . time();
-        $order = Order::create([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'total_price' => $request->total_price,
-            'user_id' => $request->user_id,
-            'tracking_no'=>$tracking_no
-        ]);
-        $orderItems = $request->order_items;
-        foreach ($orderItems as $item) {
-            $order->orderItems()->create([
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-            ]);
-        }
-        if ($order->save()) {
-            return response()->json(new OrderResource($order), 201);
-        } else {
-            return response()->json(['error' => 'Server Error'], 500);
-        }
-
     }
 
     /**
@@ -82,9 +58,7 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
         $order->update($request->all());
-
         return new  OrderResource($order);
     }
 
@@ -93,10 +67,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
-        //
         $order->delete();
         return new Response('deleted order Successfully',200);
-
     }
 }

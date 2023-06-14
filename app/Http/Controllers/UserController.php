@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -20,5 +21,8 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred.'], 500);
         }
+    }
+    public function update(Request $request, User $user ){
+        $user->update($request->all());
     }
 }
