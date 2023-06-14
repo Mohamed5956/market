@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Http\Controllers\UserController;
 
 class OrderController extends Controller
 {
@@ -41,17 +43,52 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         //
+        $user = Auth::user();
+        $userController = new UserController();
+//        dd($user);
         $tracking_no = 'Order' . time();
-        $order = Order::create([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'total_price' => $request->total_price,
-            'user_id' => $request->user_id,
-            'tracking_no'=>$tracking_no
-        ]);
+//        dd($user->phone);
+        if($user && $user->phone){
+//            dd($user->phone);
+            $order = Order::create([
+                'name' => $user->firstName,
+                'lastName' => $user->lastName,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'total_price' => $request->total_price,
+                'user_id' => $user->id,
+                'tracking_no' => $tracking_no
+            ]);
+        }elseif ($user){
+//            dd($user);
+            $userController->updated();
+//            $user->updated($request->all());
+//            $order = Order::create([
+//                'name' => $user->firstName,
+//                'lastName' => $user->lastName,
+//                'email' => $user->email,
+//                'phone' => $user->phone,
+//                'address' => $user->address,
+//                'total_price' => $request->total_price,
+//                'user_id' => $user->id,
+//                'tracking_no' => $tracking_no
+//            ]);
+        dd($user);
+        }
+        else {
+            dd("order");
+            $order = Order::create([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'total_price' => $request->total_price,
+                'user_id' => $request->user_id,
+                'tracking_no' => $tracking_no
+            ]);
+        }
         $orderItems = $request->order_items;
         foreach ($orderItems as $item) {
             $order->orderItems()->create([
@@ -82,9 +119,7 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
         $order->update($request->all());
-
         return new  OrderResource($order);
     }
 
@@ -93,10 +128,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
-        //
         $order->delete();
         return new Response('deleted order Successfully',200);
-
     }
 }

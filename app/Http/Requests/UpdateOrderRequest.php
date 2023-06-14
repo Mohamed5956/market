@@ -24,14 +24,15 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'user_id' => 'required',
-            'phone' => 'required',
-            'address' => 'required|string',
-            'total_price' => 'required',
-//            'tracking_no' => 'required',
+            'firstName' => 'string|max:255',
+            'lastName' => 'string|max:255',
+            'email' => 'string|email|max:255',
+            'user_id' => '',
+            'phone' => '',
+            'address' => 'string',
+            'status' => '',
+            'total_price' => '',
+            'tracking_no' => '',
         ];
     }
     public function failedValidation(Validator $validator)
