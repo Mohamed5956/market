@@ -32,4 +32,21 @@ class DashboardController extends Controller
             'OnDelivery_orders' => $OnDelivery_orders,
         ]);
     }
+    public function getMostSoldProducts()
+    {
+        $mostSoldProducts = Product::select('products.id', 'products.name')
+            ->join('orderitems', 'products.id', '=', 'orderitems.product_id')
+            ->groupBy('products.id', 'products.name')
+            ->orderByRaw('SUM(orderitems.quantity) DESC')
+            ->limit(5)
+            ->get([
+                'products.product_id',
+                'products.product_name',
+                \DB::raw('SUM(orderitems.quantity) as total_quantity'),
+                \DB::raw('SUM(orderitems.quantity * order_items.price) as total_sales_amount')
+            ]);
+        return response()->json([
+            'mostSoldProducts'=>$mostSoldProducts
+        ]);
+    }
 }
