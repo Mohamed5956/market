@@ -78,7 +78,6 @@ class ProductController extends Controller
                 $image_name = "public/images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
                 $product['image'] = $image_name;
-
             }catch(Exception $moveImageException)
             {
                 return response()->json([
