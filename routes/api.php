@@ -33,11 +33,13 @@ use App\Http\Controllers\UserController;
 Route::apiResource('products', ProductController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('subcategories', subCategoryController::class);
+Route::apiResource('packages',PackageController::class);
+
 
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
     Route::apiResource('roles',RoleController::class);
-    Route::apiResource('packages',PackageController::class);
+//    Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
 //    Route::apiResource('products', ProductController::class);
 //    Route::apiResource('categories', CategoryController::class);
