@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::apiResource('subcategories', subCategoryController::class);
     Route::get('/dashboard',[DashboardController::class,'analysis']);
     Route::get('/dashboard/most-sold',[DashboardController::class,'getMostSoldProducts']);
+    Route::get('/dashboard/user-pay',[DashboardController::class,'getMostUserPay']);
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
