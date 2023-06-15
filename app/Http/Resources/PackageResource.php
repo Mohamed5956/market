@@ -16,6 +16,8 @@ class PackageResource extends JsonResource
             // Define the attributes you want to include in the JSON response
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
+            'image' => $this->image,
             'total_price'=>$this->total_price,
 //            'package_item'=>new PackageitemResource($this->packageItems),
             // Add other attributes as needed

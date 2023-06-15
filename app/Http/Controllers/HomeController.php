@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,10 @@ class HomeController extends Controller
     public function Categories(){
         $categories = Category::All();
         return response()->json(["Categories" => $categories], 200);
+    }
+    public function Subcategories($categoryId){
+        $subcategories = Subcategory::where('category_id', '=', $categoryId)->get();
+        return response()->json(["Subcategories" => $subcategories], 200);
     }
     public function store_order(StoreOrderRequest $request){
         $user = Auth::user();

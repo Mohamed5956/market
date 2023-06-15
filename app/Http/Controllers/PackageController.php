@@ -34,7 +34,9 @@ class PackageController extends Controller
         $package = Package::create([
             'name' => $request->name,
             'total_price' => $request->total_price,
+            'description'=>$request->description,
         ]);
+        $this->save_image($request->image,$package);
         $packageItems = $request->package_items;
         foreach ($packageItems as $item) {
             $package->packageItems()->create([
@@ -63,7 +65,11 @@ class PackageController extends Controller
      */
     public function update(UpdatePackageRequest $request, Package $package) :JsonResponse
     {
-        $package->update($request->all());
+        $old_image=  $package->image;
+        if($request->image){
+            $this->save_image($request->image, $package);
+            $this->delete_image($old_image);
+        }
         if ($package->update($request->all())) {
             return response()->json(new PackageResource($package), 201);
         } else {
@@ -77,11 +83,34 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->delete();
+        $this->delete_image($package->image);
         if ($package->delete()) {
             return response()->json(['message' => 'deleted successfully'], 203);
         } else {
             return response()->json(['error' => 'Server Error'], 500);
         }
+    }
 
+    private function delete_image($image_name){
+        if($image_name !='images/packages/package_defualt_image.jpg'){
+            try{
+                unlink(public_path('/'.$image_name));
+            }catch (\Exception $e){
+                echo $e;
+            }
+        }
+    }
+
+    private function save_image($image, $package){
+        if ($image){
+            $image_name = "images/packages/".time().'.'.$image->extension();
+            $image->move(public_path('images/packages'),$image_name);
+        }
+        else
+        {
+            $image_name = "images/packages/package_defualt_image.jpg";
+        }
+        $package->image = $image_name;
+        $package->save();
     }
 }
