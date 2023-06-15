@@ -86,6 +86,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/home/packages', [HomeController::class, 'Packages']);
 Route::get('/home/products', [HomeController::class, 'Products']);
 Route::get('/home/categories', [HomeController::class, 'Categories']);
+Route::get('/home/subcategories/{categoryId}', [HomeController::class, 'Subcategories']);
 
 //-------Get ALL Users------
 Route::get('users', [UserController::class, 'index']);
