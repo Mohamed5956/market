@@ -7,6 +7,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\Packageitem;
 use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
@@ -26,6 +27,11 @@ class HomeController extends Controller
         $packages=Package::with('packageItems')->get();
         return response()->json(["Packages" => $packages], 200);
     }
+    public function PackageItems($packageId){
+        $packageItems = Packageitem::where('package_id', '=', $packageId)->get();
+        return response()->json(["PackageItems" => $packageItems], 200);
+    }
+
     public function Products(){
         if (isset($_GET['filter'])) {
            if ($_GET['filter']=='trending') {
