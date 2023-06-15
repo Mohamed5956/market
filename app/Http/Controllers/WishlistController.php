@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WishlistResource;
 use App\Models\Wishlist;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -18,9 +19,11 @@ class WishlistController extends Controller
     {
         $wishlist = Wishlist::where('user_id', Auth::id())->get();
         if (count($wishlist) <= 0) {
-            return response()->json(['error' => 'No Data Found.'], Response::HTTP_NOT_FOUND);
+            return response()->json(['error' => 'No Data Found.'], 404);
         }else{
-            return response()->json([ 'data' => $wishlist ], 200);
+            $user_wishlist = Wishlist::with('user', 'product')->get();
+            $wishlist_collection = WishlistResource::collection($user_wishlist);
+            return response()->json(['data'=>$wishlist_collection], 200);
         }
     }
 
