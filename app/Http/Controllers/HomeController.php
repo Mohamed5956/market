@@ -7,7 +7,9 @@ use App\Http\Resources\OrderResource;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\Packageitem;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
@@ -25,6 +27,11 @@ class HomeController extends Controller
         $packages=Package::with('packageItems')->get();
         return response()->json(["Packages" => $packages], 200);
     }
+    public function PackageItems($packageId){
+        $data = Package::with( 'packageItems.product')->findOrFail($packageId);
+        return response()->json(["data" => $data], 200);
+    }
+
     public function Products(){
         if (isset($_GET['filter'])) {
            if ($_GET['filter']=='trending') {
@@ -43,24 +50,35 @@ class HomeController extends Controller
         $categories = Category::All();
         return response()->json(["Categories" => $categories], 200);
     }
+    public function Subcategories($categoryId){
+        $subcategories = Subcategory::where('category_id', '=', $categoryId)->get();
+        return response()->json(["Subcategories" => $subcategories], 200);
+    }
     public function store_order(StoreOrderRequest $request){
         $user = Auth::user();
         $userController = new UserController();
         $tracking_no = 'Order' . time();
         if($user && $user->phone){
+
+            $user->address1 = $request->address;
+            $user->update();
+
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'address' => $user->address1,
+                'address' => $request->address,
                 'total_price' => $request->total_price,
                 'user_id' => $user->id,
                 'tracking_no' => $tracking_no
             ]);
         }elseif ($user){
-            $userController->update($request,$user);
-            $user->updated($request->all());
+
+            $user->address1 = $request->address;
+            $user->phone = $request->phone;
+            $user->update();
+
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,

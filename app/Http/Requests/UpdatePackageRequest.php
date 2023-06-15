@@ -24,7 +24,10 @@ class UpdatePackageRequest extends FormRequest
     {
         return [
             'name'=> 'required | min:2 | max:255',
-            'total_price'=>'required | numeric '
+            'total_price'=>'required | numeric ',
+            'image'=>'',
+            'description'=>'',
+
         ];
     }
     protected function failedValidation(Validator $validator): void
