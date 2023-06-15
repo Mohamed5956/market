@@ -28,9 +28,9 @@ class StoreProductsRequest extends FormRequest
             'description'  => ['nullable','regex:/^[^0-9][a-zA-Z0-9]*$/'],
             'price'  => 'required | integer',
             'quantity'  => 'required | integer',
-            'trend' => 'required | integer',
+            'trend' => 'required',
             'subcategory_id' => 'required | integer',
-            'productImage' => 'nullable|mimes:jpeg,png'
+            'image' => 'nullable|mimes:jpeg,png'
         ];
     }
 

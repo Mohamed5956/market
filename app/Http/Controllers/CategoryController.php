@@ -41,9 +41,7 @@ class CategoryController extends Controller
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
-
         $old_image=  $category->image;
-        // $category->update($request->all());
         if($request->image){
             $this->save_image($request->image, $category);
             $this->delete_image($old_image);
