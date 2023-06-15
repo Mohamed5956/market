@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $mostPayingUsers = User::select('users.id', 'users.name','users.lastName','users.phone')
             ->join('orders', 'users.id', '=', 'orders.user_id')
             ->join('orderitems', 'orders.id', '=', 'orderitems.order_id')
-            ->groupBy('users.id', 'users.name','users.lastName','users.phone'g)
+            ->groupBy('users.id', 'users.name','users.lastName','users.phone')
             ->orderByRaw('SUM(orderitems.quantity * orderitems.price) DESC')
             ->limit(5)
             ->get([
