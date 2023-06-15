@@ -28,8 +28,8 @@ class HomeController extends Controller
         return response()->json(["Packages" => $packages], 200);
     }
     public function PackageItems($packageId){
-        $packageItems = Packageitem::where('package_id', '=', $packageId)->get();
-        return response()->json(["PackageItems" => $packageItems], 200);
+        $data = Package::with( 'packageItems.product')->findOrFail($packageId);
+        return response()->json(["data" => $data], 200);
     }
 
     public function Products(){

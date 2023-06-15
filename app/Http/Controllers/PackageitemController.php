@@ -64,7 +64,8 @@ class PackageitemController extends Controller
      */
     public function show(Packageitem $packageitem)
     {
-        //
+        $product = Packageitem::with( 'product')->findOrFail($packageitem->id);
+        return response()->json(['data' => $product], 200);
     }
 
     /**
