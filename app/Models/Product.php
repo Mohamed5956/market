@@ -17,6 +17,7 @@ class Product extends Model
         'quantity',
         'image',
         'trend',
+        'discount',
         'subcategory_id',
         'slug'
     ];

@@ -23,6 +23,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->all());
+        $this->save_image($request->image,$category);
         return response()->json(["data" => $category], 201);
     }
 
@@ -38,12 +39,15 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreCategoryRequest $request, string $id)
+    public function update(StoreCategoryRequest $request, Category $category)
     {
-        $category = Category::find($id);
-        $new_info = $request->all();
+        $old_image=  $category->image;
+        if($request->image){
+            $this->save_image($request->image, $category);
+            $this->delete_image($old_image);
+        }
 
-        if($category->update($new_info))
+        if($category->update($request->all()))
             return response()->json(["message" => "category updated successfully"], 200);
         else
             return response()->json(["message" => "An error occure while updating category"], 400);
@@ -54,10 +58,35 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
+
         $category = Category::find($id);
+        $this->delete_image($category->image);
         if($category->delete())
             return response()->json(["message" => "category deleted successfully"], 200);
         else
             return response()->json(["message" => "An error occure while deleting category"], 400);
     }
+    private function delete_image($image_name){
+        if($image_name !='images/categories/category_defualt_image.jpg'){
+            try{
+                unlink(public_path('/'.$image_name));
+            }catch (\Exception $e){
+                echo $e;
+            }
+        }
+    }
+
+    private function save_image($image, $category){
+        if ($image){
+            $image_name = "images/categories/".time().'.'.$image->extension();
+            $image->move(public_path('images/categories'),$image_name);
+            }
+        else
+        {
+            $image_name = "images/categories/category_defualt_image.jpg";
+        }
+        $category->image = $image_name;
+        $category->save();
+    }
+
 }

@@ -31,7 +31,7 @@ class ProductController extends Controller
         {
             try{
                 $image = $request->file("image");
-                $image_name = "public/images/products/".time().'.'.$image->extension();
+                $image_name = "images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
 
             }catch(Exception $moveImageException)
@@ -44,7 +44,7 @@ class ProductController extends Controller
         }
         else
         {
-            $image_name = "public/images/products/product_defualt_image.jpg";
+            $image_name = "images/products/product_defualt_image.jpg";
         }
         // Save the product and return a success response
         $product['image'] = $image_name;
@@ -75,7 +75,7 @@ class ProductController extends Controller
         {
             try{
                 $image = $request->file("image");
-                $image_name = "public/images/products/".time().'.'.$image->extension();
+                $image_name = "images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
                 $product['image'] = $image_name;
             }catch(Exception $moveImageException)
@@ -103,7 +103,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product_image = str_replace("public", "", $product["image"]);
-        $product_defualt_image = "public/images/products/product_defualt_image.jpg";
+        $product_defualt_image = "images/products/product_defualt_image.jpg";
 
         if($product["image"] != $product_defualt_image)
             unlink(public_path($product_image));

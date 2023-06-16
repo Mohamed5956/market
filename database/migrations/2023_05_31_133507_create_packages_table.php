@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->decimal('total_price', 10, 2);
             $table->softDeletes();
             $table->timestamps();
