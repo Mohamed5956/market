@@ -27,7 +27,7 @@ class CartController extends Controller
             $cart = Cart::with('user', 'product')->where('user_id', '=', $id)->get();
 
             if (count($cart) <= 0) {
-                return response()->json(['error' => 'No Data Found.'], 404);
+                return response()->json(['data' => [] ], 200);
             }else{
 //                $user_cart = Cart::with('user', 'product')->get();
                 $cart_collection = CartResource::collection($cart);
