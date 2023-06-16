@@ -42,8 +42,8 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
 //    Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
 //    Route::apiResource('products', ProductController::class);
-//    Route::apiResource('categories', CategoryController::class);
-//    Route::apiResource('subcategories', subCategoryController::class);
+   Route::apiResource('categories', CategoryController::class);
+   Route::apiResource('subcategories', subCategoryController::class);
     //    ORDER
     Route::apiResource('order',OrderController::class);
     Route::apiResource('orderItem',OrderItemController::class);

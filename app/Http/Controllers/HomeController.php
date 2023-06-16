@@ -59,19 +59,26 @@ class HomeController extends Controller
         $userController = new UserController();
         $tracking_no = 'Order' . time();
         if($user && $user->phone){
+
+            $user->address1 = $request->address;
+            $user->update();
+
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'address' => $user->address1,
+                'address' => $request->address,
                 'total_price' => $request->total_price,
                 'user_id' => $user->id,
                 'tracking_no' => $tracking_no
             ]);
         }elseif ($user){
-            $userController->update($request,$user);
-            $user->updated($request->all());
+
+            $user->address1 = $request->address;
+            $user->phone = $request->phone;
+            $user->update();
+
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,

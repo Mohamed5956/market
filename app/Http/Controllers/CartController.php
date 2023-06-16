@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCartRequest;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Http\Controllers\Controller;
 use Exception;
@@ -19,7 +20,7 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $id=Auth::user()->id;
@@ -28,9 +29,10 @@ class CartController extends Controller
             if (count($cart) <= 0) {
                 return response()->json(['data' => [] ], 200);
             }else{
-                return response()->json([ 'data' => $cart ], 200);
+                $user_cart = Cart::with('user', 'product')->get();
+                $cart_collection = CartResource::collection($user_cart);
+                return response()->json(['data'=>$cart_collection], 200);
             }
-
         }catch (Exception $e){
             return response()->json(['error' => 'An error occurred. Please try again.'], 500);
         }
