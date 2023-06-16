@@ -24,13 +24,13 @@ class CartController extends Controller
     {
         try {
             $id=Auth::user()->id;
-            $cart = Cart::where('user_id', '=', $id)->get();
+            $cart = Cart::with('user', 'product')->where('user_id', '=', $id)->get();
 
             if (count($cart) <= 0) {
                 return response()->json(['error' => 'No Data Found.'], 404);
             }else{
-                $user_cart = Cart::with('user', 'product')->get();
-                $cart_collection = CartResource::collection($user_cart);
+//                $user_cart = Cart::with('user', 'product')->get();
+                $cart_collection = CartResource::collection($cart);
                 return response()->json(['data'=>$cart_collection], 200);
             }
         }catch (Exception $e){
