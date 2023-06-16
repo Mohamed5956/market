@@ -17,12 +17,11 @@ class WishlistController extends Controller
      */
     public function index()
     {
-        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $wishlist = Wishlist::with('user', 'product')->where('user_id', Auth::id())->get();
         if (count($wishlist) <= 0) {
             return response()->json(['error' => 'No Data Found.'], 404);
         }else{
-            $user_wishlist = Wishlist::with('user', 'product')->get();
-            $wishlist_collection = WishlistResource::collection($user_wishlist);
+            $wishlist_collection = WishlistResource::collection($wishlist);
             return response()->json(['data'=>$wishlist_collection], 200);
         }
     }
