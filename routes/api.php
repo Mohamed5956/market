@@ -17,6 +17,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChatbotController;
+
 
 
 /*
@@ -51,6 +53,9 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::get('/dashboard',[DashboardController::class,'analysis']);
     Route::get('/dashboard/most-sold',[DashboardController::class,'getMostSoldProducts']);
     Route::get('/dashboard/user-pay',[DashboardController::class,'getMostUserPay']);
+    //    Chatbot
+//    Route::apiResource('chatbot', ChatbotController::class);
+
 });
 
 Route::apiResource('products', ProductController::class);
@@ -103,3 +108,7 @@ Route::get('review/product/{id}', [ReviewController::class, 'list_review']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//----------------------------------------------
+Route::apiResource('chatbot', ChatbotController::class);
+
