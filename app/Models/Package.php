@@ -11,7 +11,9 @@ class Package extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
-        'total_price'
+        'total_price',
+        'description',
+//        'image'
     ];
     public function packageItems(){
         return $this->hasMany(Packageitem::class);

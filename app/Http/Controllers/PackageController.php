@@ -31,12 +31,18 @@ class PackageController extends Controller
      */
     public function store(StorePackageRequest $request)
     {
-        $package = Package::create([
-            'name' => $request->name,
-            'total_price' => $request->total_price,
-            'description'=>$request->description,
-        ]);
-        $this->save_image($request->image,$package);
+//        dd($request->description);
+//        $package = Package::create([
+//            'name' => $request->name,
+//            'total_price' => $request->total_price,
+//            'description' => $request->description,
+//        ]);
+        $package['name'] = $request->name;
+        $package['total_price'] = $request->total_price;
+        $package['description'] = $request->description;
+        $package = Package::create($package);
+        $this->save_image($request->image, $package);
+
         $packageItems = $request->package_items;
         foreach ($packageItems as $item) {
             $package->packageItems()->create([
