@@ -9,7 +9,9 @@ class Chatbot extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'question',
-        'answer',
-    ];
+        'ar_question',
+        'en_question',
+        'ar_answer',
+        'en_answer'
+];
 }

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chatbot', function (Blueprint $table) {
+        Schema::create('chatbots', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->text('answer');
+            $table->string('ar_question');
+            $table->string('en_question');
+            $table->text('ar_answer');
+            $table->text('en_answer');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chatbot');
+        Schema::dropIfExists('chatbots');
     }
 };

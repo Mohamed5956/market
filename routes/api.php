@@ -32,18 +32,14 @@ use App\Http\Controllers\ChatbotController;
 |
 */
 
-Route::apiResource('products', ProductController::class);
-Route::apiResource('categories', CategoryController::class);
-Route::apiResource('subcategories', subCategoryController::class);
-Route::apiResource('packages',PackageController::class);
 
 
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
     Route::apiResource('roles',RoleController::class);
-//    Route::apiResource('packages',PackageController::class);
+    Route::apiResource('packages',PackageController::class);
     Route::apiResource('packageitems',PackageitemController::class);
-//    Route::apiResource('products', ProductController::class);
+    Route::apiResource('products', ProductController::class);
    Route::apiResource('categories', CategoryController::class);
    Route::apiResource('subcategories', subCategoryController::class);
     //    ORDER
@@ -55,13 +51,10 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::get('/dashboard/user-pay',[DashboardController::class,'getMostUserPay']);
     //    Chatbot
 //    Route::apiResource('chatbot', ChatbotController::class);
+    //-------Get ALL Users------
+    Route::get('users', [UserController::class, 'index']);
 
 });
-
-Route::apiResource('products', ProductController::class);
-Route::apiResource('subcategories', subCategoryController::class);
-Route::apiResource('categories', CategoryController::class);
-
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Cart
@@ -76,14 +69,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('wishlist', WishlistController::class);
 //    Store Order
     Route::post('/home/orders', [HomeController::class, 'store_order']);
-
+    Route::apiResource('orderItem',OrderItemController::class);
 });
-//Route::apiResource('order',OrderController::class);
-//Route::apiResource('orderItem',OrderItemController::class);
-
-
-
-
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -94,21 +81,20 @@ Route::get('/home/categories', [HomeController::class, 'Categories']);
 Route::get('/home/subcategories/{categoryId}', [HomeController::class, 'Subcategories']);
 Route::get('/home/packageitems/{packageId}', [HomeController::class, 'PackageItems']);
 
-//-------Get ALL Users------
-Route::get('users', [UserController::class, 'index']);
-
-
-
-
 // REVIEWS
 Route::get('review/product/{id}', [ReviewController::class, 'list_review']);
 //Route::apiResource('review', ReviewController::class);
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 //----------------------------------------------
-Route::apiResource('chatbot', ChatbotController::class);
+//Route::apiResource('chatbot', ChatbotController::class);
+Route::post('/chatbot', [ChatbotController::class, 'store']);
+Route::get('/chatbot/language-options', [ChatbotController::class, 'getLanguageOptions']);
+Route::post('/chatbot/language-selection', [ChatbotController::class, 'processLanguageSelection']);
+Route::post('/chatbot/answer', [ChatbotController::class, 'processAnswer']);
+Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
+
+
 
