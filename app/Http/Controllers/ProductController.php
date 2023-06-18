@@ -40,7 +40,6 @@ class ProductController extends Controller
                     'error' => $moveImageException->getMessage()
                 ]);
             }
-
         }
         else
         {

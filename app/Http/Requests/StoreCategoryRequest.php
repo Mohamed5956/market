@@ -25,6 +25,7 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required', 'regex:/^[^0-9][a-zA-Z0-9]*$/'],
+            'image' => 'nullable|mimes:jpeg,png'
         ];
     }
 

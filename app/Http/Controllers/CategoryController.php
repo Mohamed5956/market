@@ -80,11 +80,12 @@ class CategoryController extends Controller
         if ($image){
             $image_name = "images/categories/".time().'.'.$image->extension();
             $image->move(public_path('images/categories'),$image_name);
-            }
+        }
         else
         {
             $image_name = "images/categories/category_defualt_image.jpg";
         }
+
         $category->image = $image_name;
         $category->save();
     }
