@@ -31,6 +31,7 @@ class PackageController extends Controller
      */
     public function store(StorePackageRequest $request)
     {
+//        dd($request->all());
         $package = Package::create([
             'name' => $request->name,
             'total_price' => $request->total_price,
@@ -100,9 +101,9 @@ class PackageController extends Controller
             }
         }
     }
-
     private function save_image($image, $package){
         if ($image){
+//            dd($image);
             $image_name = "images/packages/".time().'.'.$image->extension();
             $image->move(public_path('images/packages'),$image_name);
         }

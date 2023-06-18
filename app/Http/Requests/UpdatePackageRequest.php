@@ -23,8 +23,8 @@ class UpdatePackageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> 'required | min:2 | max:255',
-            'total_price'=>'required | numeric ',
+            'name'=> 'min:2 | max:255',
+            'total_price'=>'numeric',
             'image'=>'',
             'description'=>'',
 
