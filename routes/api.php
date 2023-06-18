@@ -49,6 +49,8 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::get('/dashboard',[DashboardController::class,'analysis']);
     Route::get('/dashboard/most-sold',[DashboardController::class,'getMostSoldProducts']);
     Route::get('/dashboard/user-pay',[DashboardController::class,'getMostUserPay']);
+    Route::get('/dashboard/order-status',[DashboardController::class,'getOrdersStatus']);
+
     //    Chatbot
 //    Route::apiResource('chatbot', ChatbotController::class);
     //-------Get ALL Users------

@@ -76,4 +76,14 @@ class DashboardController extends Controller
             'mostPayingUsers' => $mostPayingUsers
         ]);
     }
+
+    public function getOrdersStatus(){
+        $data = \DB::table('orders')->select(
+            \DB::raw('COUNT(CASE WHEN status = "Processing" AND deleted_at IS NULL THEN 1 END) as processingOrdersCount'),
+            \DB::raw('COUNT(CASE WHEN status = "On Delivery" AND deleted_at IS NULL THEN 1 END) as onDeliveryOrdersCount'),
+            \DB::raw('COUNT(CASE WHEN status = "Delivered" AND deleted_at IS NULL THEN 1 END) as deliveredOrdersCount'),
+            \DB::raw('COUNT(deleted_at) as deletedOrdersCount')
+        )->first();
+        return response()->json($data);
+    }
 }
