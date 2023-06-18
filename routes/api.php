@@ -31,9 +31,6 @@ use App\Http\Controllers\ChatbotController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-
-
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     // Routes that require admin role
     Route::apiResource('roles',RoleController::class);

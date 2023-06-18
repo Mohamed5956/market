@@ -59,10 +59,8 @@ class HomeController extends Controller
         $userController = new UserController();
         $tracking_no = 'Order' . time();
         if($user && $user->phone){
-
             $user->address1 = $request->address;
             $user->update();
-
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,
@@ -74,11 +72,9 @@ class HomeController extends Controller
                 'tracking_no' => $tracking_no
             ]);
         }elseif ($user){
-
             $user->address1 = $request->address;
             $user->phone = $request->phone;
             $user->update();
-
             $order = Order::create([
                 'firstName' => $user->name,
                 'lastName' => $user->lastName,
@@ -108,6 +104,9 @@ class HomeController extends Controller
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
             ]);
+            $product=Product::findOrFail($item['product_id']);
+            $product->quantity -= $item['quantity'];
+            $product->update();
         }
         if ($order->save()) {
             return response()->json(new OrderResource($order), 201);
