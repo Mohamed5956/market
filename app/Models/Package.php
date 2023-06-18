@@ -12,7 +12,8 @@ class Package extends Model
     protected $fillable = [
         'name',
         'total_price',
-        'description'
+        'description',
+//        'image'
     ];
     public function packageItems(){
         return $this->hasMany(Packageitem::class);
