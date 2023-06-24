@@ -77,9 +77,9 @@ class OrderController extends Controller
     }
 
     public function destroy_order(){
-        $order_id = Route::current()->parameter('id');
+        $tracking_no = Route::current()->parameter('id');
         $order = Order::where('user_id', Auth::id())
-            ->where('id', $order_id)
+            ->where('tracking_no', $tracking_no)
             ->first();
         if($order->delete()){
             return response()->json(['message' => 'Order deleted successfully'], 200);
