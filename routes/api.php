@@ -74,6 +74,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('orderItem',OrderItemController::class);
     // Display user's order
     Route::get('/home/orders/{id}', [OrderController::class, 'user_order']);
+
+    // Delete user's order
+    Route::delete('/home/orders/{id}', [OrderController::class, 'destroy_order']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');

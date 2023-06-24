@@ -75,4 +75,17 @@ class OrderController extends Controller
         $order->delete();
         return new Response('deleted order Successfully',200);
     }
+
+    public function destroy_order(){
+        $order_id = Route::current()->parameter('id');
+        $order = Order::where('user_id', Auth::id())
+            ->where('id', $order_id)
+            ->first();
+        if($order->delete()){
+            return response()->json(['message' => 'Order deleted successfully'], 200);
+        }else{
+            return response()->json(["error" => 'An error occurred. Try again later'], 200);
+        }
+    }
+
 }
