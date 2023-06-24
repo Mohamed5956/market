@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Store Order
     Route::post('/home/orders', [HomeController::class, 'store_order']);
     Route::apiResource('orderItem',OrderItemController::class);
+    // display user order
+    Route::get('/home/orders/{id}', [OrderController::class, 'user_order']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');

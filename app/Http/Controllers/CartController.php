@@ -31,7 +31,7 @@ class CartController extends Controller
             }else{
 //                $user_cart = Cart::with('user', 'product')->get();
                 $cart_collection = CartResource::collection($cart);
-                return response()->json(['data'=>$cart_collection], 200);
+                return response()->json(['data' => $cart_collection], 200);
             }
         }catch (Exception $e){
             return response()->json(['error' => 'An error occurred. Please try again.'], 500);
