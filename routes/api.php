@@ -49,10 +49,11 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::get('/dashboard/order-status',[DashboardController::class,'getOrdersStatus']);
 
     //    Chatbot
-//    Route::apiResource('chatbot', ChatbotController::class);
+    //    Route::apiResource('chatbot', ChatbotController::class);
     //-------Get ALL Users------
     Route::get('users', [UserController::class, 'index']);
-
+    // DELETE USER
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
     // Change user role
     Route::put('users/{id}/role', [UserController::class, 'update']);
 });

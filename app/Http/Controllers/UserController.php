@@ -33,7 +33,18 @@ class UserController extends Controller
         if($user->update($request->all())){
             return response()->json(['message' => 'Role Updated Successfully'], 200);
         }else{
-            return response()->json(['error' => 'An error occurred.', "user"=>$user], 500);
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function destroy()
+    {
+        $id = Route::current()->parameter('id');
+        $user = User::where('id', $id);
+        if($user->delete()) {
+            return response()->json(['message' => 'Role Updated Successfully', "user"=>$user], 200);
+        }else{
+            return response()->json(['error' => 'An error occurred.'], 500);
         }
     }
 }
