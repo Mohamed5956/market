@@ -105,3 +105,12 @@ Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
 
 
 
+
+
+
+
+
+
+
+Route::get('login/google', [AuthController::class,'googleRedirect'])->name('login.google');
+Route::get('login/google/callback',  [AuthController::class,'googleCallback']);

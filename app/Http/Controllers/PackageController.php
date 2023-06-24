@@ -40,9 +40,9 @@ class PackageController extends Controller
         $package['name'] = $request->name;
         $package['total_price'] = $request->total_price;
         $package['description'] = $request->description;
+        $package['discount'] = $request->discount;
         $package = Package::create($package);
         $this->save_image($request->image, $package);
-
         $packageItems = $request->package_items;
         foreach ($packageItems as $item) {
             $package->packageItems()->create([

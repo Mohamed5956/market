@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
+
 
 class AuthController extends Controller
 {
@@ -71,5 +73,51 @@ class AuthController extends Controller
                 'token' => $token,
         ]);
     }
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        $user = Socialite::driver('google')->user();
+
+        // Check if the user already exists in your database
+        $existingUser = User::where('email', $user->email)->first();
+
+        if ($existingUser) {
+            // User exists, generate a token and return the response
+            $token = $existingUser->createToken('token')->plainTextToken;
+g
+            return response()->json([
+                'name' => $existingUser->name,
+                'role' => $existingUser->role->name,
+                'token' => $token,
+            ]);
+        }
+
+        // User does not exist, create a new user
+        $userRole = Role::where('name', 'user')->first();
+        if (!$userRole) {
+            return response()->json(['errors' => 'Role not found. Please contact the administrator.'], 500);
+        }
+
+        $newUser = new User();
+        $newUser->name = $user->name;
+        $newUser->email = $user->email;
+        $newUser->password = Hash::make(''); // Set an empty password for Google-registered users
+        $newUser->role_id = $userRole->id;
+        $newUser->save();
+
+        // Generate a token and return the response
+        $token = $newUser->createToken('token')->plainTextToken;
+
+        return response()->json([
+            'name' => $newUser->name,
+            'role' => $newUser->role->name,
+            'token' => $token,
+        ]);
+    }
+
 
 }
