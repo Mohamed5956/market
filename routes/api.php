@@ -74,9 +74,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('orderItem',OrderItemController::class);
     // Display user's order
     Route::get('/home/orders/{id}', [OrderController::class, 'user_order']);
-
     // Delete user's order
     Route::delete('/home/orders/{id}', [OrderController::class, 'destroy_order']);
+
+    // Increment Product Quantity
+    Route::patch('/inc/product/{product_id}/user/{user_id}', [ProductController::class, 'increment_prod_qty']);
+
+    // Decrement Product Quantity
+    Route::patch('/dec/product/{product_id}/user/{user_id}', [ProductController::class, 'decrement_prod_qty']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');

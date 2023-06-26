@@ -88,7 +88,7 @@ class AuthController extends Controller
         if ($existingUser) {
             // User exists, generate a token and return the response
             $token = $existingUser->createToken('token')->plainTextToken;
-g
+
             return response()->json([
                 'name' => $existingUser->name,
                 'role' => $existingUser->role->name,
