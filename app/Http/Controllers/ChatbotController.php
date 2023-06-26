@@ -33,9 +33,9 @@ class ChatbotController extends Controller
         $selectedLanguage = $request->language;
         $questionId = $request->questionId;
         if($request->language == $this->languages[0]) {
-            $answer = Chatbot::select('ar_answer')->where('id', '=', $questionId)->get();
+            $answer = Chatbot::select('ar_answer')->where('id', '=', $questionId)->first();
         }elseif ($request->language == $this->languages[1]){
-            $answer = Chatbot::select('en_answer')->where('id', '=', $questionId)->get();
+            $answer = Chatbot::select('en_answer')->where('id', '=', $questionId)->first();
         }
         return response()->json(['answer' => $answer]);
     }
