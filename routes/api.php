@@ -49,10 +49,13 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     Route::get('/dashboard/order-status',[DashboardController::class,'getOrdersStatus']);
 
     //    Chatbot
-//    Route::apiResource('chatbot', ChatbotController::class);
+    //    Route::apiResource('chatbot', ChatbotController::class);
     //-------Get ALL Users------
     Route::get('users', [UserController::class, 'index']);
-
+    // DELETE USER
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
+    // Change user role
+    Route::put('users/{id}/role', [UserController::class, 'update']);
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -69,6 +72,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Store Order
     Route::post('/home/orders', [HomeController::class, 'store_order']);
     Route::apiResource('orderItem',OrderItemController::class);
+    // Display user's order
+    Route::get('/home/orders/{id}', [OrderController::class, 'user_order']);
+    // Delete user's order
+    Route::delete('/home/orders/{id}', [OrderController::class, 'destroy_order']);
+
+    // Increment Product Quantity
+    Route::patch('/inc/product/{product_id}/user/{user_id}', [ProductController::class, 'increment_prod_qty']);
+
+    // Decrement Product Quantity
+    Route::patch('/dec/product/{product_id}/user/{user_id}', [ProductController::class, 'decrement_prod_qty']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -97,3 +110,12 @@ Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
 
 
 
+
+
+
+
+
+
+
+Route::get('login/google', [AuthController::class,'googleRedirect'])->name('login.google');
+Route::get('login/google/callback',  [AuthController::class,'googleCallback']);

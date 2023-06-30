@@ -10,6 +10,7 @@ use App\Http\Resources\OrderResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use App\Http\Controllers\UserController;
 
@@ -30,10 +31,14 @@ class OrderController extends Controller
     }
 
 
-    public function order_user($order_id){
-        $order = Order::where('id', '=', $order_id)->first();
-        dd($order->user());
-//        $user=User::with('orders')->get();
+    public function user_order(){
+        $id = Route::current()->parameter('id');
+        $orders = Order::where('user_id', $id)->get();
+        if(count($orders)>0){
+            return response()->json(["data" => $orders], 200);
+        }else{
+            return response()->json(['message' => 'No orders yet', 'data' => []],  200);
+        }
     }
 
 
@@ -70,4 +75,17 @@ class OrderController extends Controller
         $order->delete();
         return new Response('deleted order Successfully',200);
     }
+
+    public function destroy_order(){
+        $tracking_no = Route::current()->parameter('id');
+        $order = Order::where('user_id', Auth::id())
+            ->where('tracking_no', $tracking_no)
+            ->first();
+        if($order->delete()){
+            return response()->json(['message' => 'Order deleted successfully'], 200);
+        }else{
+            return response()->json(["error" => 'An error occurred. Try again later'], 200);
+        }
+    }
+
 }

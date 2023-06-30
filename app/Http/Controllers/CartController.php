@@ -31,7 +31,7 @@ class CartController extends Controller
             }else{
 //                $user_cart = Cart::with('user', 'product')->get();
                 $cart_collection = CartResource::collection($cart);
-                return response()->json(['data'=>$cart_collection], 200);
+                return response()->json(['data' => $cart_collection], 200);
             }
         }catch (Exception $e){
             return response()->json(['error' => 'An error occurred. Please try again.'], 500);
@@ -43,15 +43,27 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-            $cart['product_id'] = (int) $request->product_id;
+        if($this->check_for_existence($request->product_id, Auth::id())){
+            $existing_cart = Cart::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)->first();
+            $existing_cart['prod_qty'] = $existing_cart['prod_qty'] + 1;
+            if ($existing_cart->update()){
+                $all_cart = Cart::all();
+                return response()->json(["data" => $all_cart, 'message'=>'Cart updated successfully'], 200);
+            }else{
+                return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+            }
+        }else {
+            $cart['product_id'] = (int)$request->product_id;
             $cart['prod_qty'] = $request->prod_qty;
             $cart['user_id'] = Auth::id();
             $new_cart = Cart::create($cart);
-            if($new_cart){
+            if ($new_cart) {
                 return response()->json(['data' => $new_cart], 201);
-            }else{
-                return response()->json(['message'=>'Internal Server Error'], 500);
+            } else {
+                return response()->json(['message' => 'Internal Server Error'], 500);
             }
+        }
     }
 
     /**
@@ -98,6 +110,18 @@ class CartController extends Controller
         $cart = Cart::where('user_id', Auth::id())->delete();
         $remainingData = Cart::where('user_id', Auth::id())->get();
         return response()->json(['data' => $remainingData, 'message' => 'All items deleted'], 200);
+    }
+
+    private function check_for_existence($product_id, $user_id)
+    {
+        $existing_cart = Cart::where('user_id', $user_id)
+            ->where('product_id', $product_id)->first();
+
+        if ($existing_cart)
+            return true;
+
+        return false;
+
     }
 
 }

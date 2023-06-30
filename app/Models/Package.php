@@ -13,6 +13,7 @@ class Package extends Model
         'name',
         'total_price',
         'description',
+        'discount',
 //        'image'
     ];
     public function packageItems(){

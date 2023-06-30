@@ -27,6 +27,7 @@ class StorePackageRequest extends FormRequest
             'total_price'=>'required | numeric ',
             'image'=>'',
             'description'=>'',
+            'discount'=>'numeric'
         ];
     }
     protected function failedValidation(Validator $validator)
