@@ -48,7 +48,7 @@ class CategoryController extends Controller
         }
 
         if($category->update($request->all()))
-            return response()->json(["message" => "category updated successfully"], 200);
+            return response()->json($category, 201);
         else
             return response()->json(["message" => "An error occure while updating category"], 400);
     }

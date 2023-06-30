@@ -76,7 +76,8 @@ class ProductController extends Controller
                 $image = $request->file("image");
                 $image_name = "images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
-                $product['image'] = $image_name;
+                error_log($image_name);
+                $new_info['image'] = $image_name;
             }catch(Exception $moveImageException)
             {
                 return response()->json([
@@ -89,7 +90,7 @@ class ProductController extends Controller
         // Save the product and return a success response
         $updated_product = $product->update($new_info);
         if($updated_product)
-            return response()->json(["message" => "Product has been updated succesfully"], 200);
+            return response()->json($product, 201);
         else
             return response()->json(["message" => "An error occur while updating"], 400);
 
