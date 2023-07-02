@@ -26,6 +26,8 @@ class User extends Authenticatable
         'address1',
         'address2',
         'phone',
+        'social_id',
+        'social_type'
     ];
 
     /**

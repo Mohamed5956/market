@@ -82,6 +82,8 @@ class AuthController extends Controller
 
         ]);
     }
+
+
     public function googleRedirect()
     {
         return Socialite::driver('google')->redirect();
@@ -92,7 +94,7 @@ class AuthController extends Controller
         $user = Socialite::driver('google')->user();
 
         // Check if the user already exists in your database
-        $existingUser = User::where('email', $user->email)->first();
+        $existingUser = User::where('social_id', $user->id)->first();
 
         if ($existingUser) {
             // User exists, generate a token and return the response
@@ -106,6 +108,8 @@ class AuthController extends Controller
                 'email'=>$user->email,
                 'role' => $existingUser->role->name,
                 'token' => $token,
+                'social_id'=> $user->id,
+                'social_type'=> 'google',
             ]);
         }
 
@@ -118,8 +122,10 @@ class AuthController extends Controller
         $newUser = new User();
         $newUser->name = $user->name;
         $newUser->email = $user->email;
-        $newUser->password = Hash::make(''); // Set an empty password for Google-registered users
+        $newUser->password = Hash::make('my-google'); // Set an empty password for Google-registered users
         $newUser->role_id = $userRole->id;
+        $newUser->social_id = $user->id;
+        $newUser->social_type = 'google';
         $newUser->save();
 
         // Generate a token and return the response
@@ -132,9 +138,9 @@ class AuthController extends Controller
             'phone'=>$user->phone,
             'email'=>$user->email,
             'role' => $newUser->role->name,
+            'social_id'=> $user->id,
+            'social_type'=> 'google',
             'token' => $token,
         ]);
     }
-
-
 }
