@@ -46,7 +46,12 @@ class HomeController extends Controller
             return response()->json(["Products" => $products], 200);
         }
     }
-    public function Categories(){
+    public function ProductById($productId)
+    {
+        $product = Product::findOrFail($productId);
+        return response()->json(["Product" => $product], 200);
+    }
+        public function Categories(){
         $categories = Category::All();
         return response()->json(["Categories" => $categories], 200);
     }
