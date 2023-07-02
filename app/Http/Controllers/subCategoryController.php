@@ -50,7 +50,7 @@ class subCategoryController extends Controller
         }
 
         if($subcategory->update($request->all()))
-            return response()->json(["message" => "category updated successfully"], 200);
+            return response()->json($subcategory, 201);
         else
             return response()->json(["message" => "An error occure while updating category"], 400);
     }

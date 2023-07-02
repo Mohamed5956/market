@@ -34,6 +34,10 @@ class AuthController extends Controller
 
         return response()->json([
                 'name' => $user->name,
+                'lastName' => $user->lastName,
+                "address1" => $user->address1,
+                'phone'=>$user->phone,
+                'email'=>$user->email,
                 'role' => $userRole->name,
                 'token' => $token,
         ], 201);
@@ -69,12 +73,13 @@ class AuthController extends Controller
         return response()->json([
                 'id' => $user->id,
                 'name' => $user->name,
+                "address1" => $user->address1,
                 'lastName' => $user->lastName,
-                'address' => $user->address1,
-                'phone' => $user->phone,
+                'phone'=>$user->phone,
                 'email'=>$user->email,
                 'role' => $userRole,
                 'token' => $token,
+
         ]);
     }
     public function googleRedirect()
@@ -95,6 +100,10 @@ class AuthController extends Controller
 
             return response()->json([
                 'name' => $existingUser->name,
+                "address1" => $user->address1,
+                'lastName' => $user->lastName,
+                'phone'=>$user->phone,
+                'email'=>$user->email,
                 'role' => $existingUser->role->name,
                 'token' => $token,
             ]);
@@ -118,6 +127,10 @@ class AuthController extends Controller
 
         return response()->json([
             'name' => $newUser->name,
+            "address1" => $user->address1,
+            'lastName' => $user->lastName,
+            'phone'=>$user->phone,
+            'email'=>$user->email,
             'role' => $newUser->role->name,
             'token' => $token,
         ]);

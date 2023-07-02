@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductsRequest;
+use App\Models\Cart;
 use App\Models\Product;
 
 use Exception;
 use Illuminate\Http\Request;
+use Spatie\Ignition\Tests\TestClasses\Models\Car;
 
 class ProductController extends Controller
 {
@@ -76,7 +78,8 @@ class ProductController extends Controller
                 $image = $request->file("image");
                 $image_name = "images/products/".time().'.'.$image->extension();
                 $image->move(public_path("images/products"), $image_name);
-                $product['image'] = $image_name;
+                error_log($image_name);
+                $new_info['image'] = $image_name;
             }catch(Exception $moveImageException)
             {
                 return response()->json([
@@ -89,7 +92,7 @@ class ProductController extends Controller
         // Save the product and return a success response
         $updated_product = $product->update($new_info);
         if($updated_product)
-            return response()->json(["message" => "Product has been updated succesfully"], 200);
+            return response()->json($product, 201);
         else
             return response()->json(["message" => "An error occur while updating"], 400);
 
@@ -113,4 +116,29 @@ class ProductController extends Controller
 
     }
 
+
+    public function increment_prod_qty($product_id, $user_id){
+        $cart_record = Cart::where('product_id', $product_id)
+            ->where('user_id',$user_id)
+            ->first();
+        $cart_record->prod_qty += 1;
+        $cart_record->update();
+        return response()->json(['message'=>'Quantity increased', 'qty'=>$cart_record->prod_qty],200);
+    }
+
+
+    public function decrement_prod_qty($product_id, $user_id){
+        $cart_record = Cart::where('product_id', $product_id)
+            ->where('user_id',$user_id)
+            ->first();
+        $cart_record->prod_qty -= 1;
+
+        if ($cart_record->prod_qty == 0){
+            $cart_record->delete();
+            return response()->json(['message'=>'Product has been deleted'],200);
+        }
+
+        $cart_record->update();
+        return response()->json(['message'=>'Quantity decreased', 'qty'=>$cart_record->prod_qty],200);
+    }
 }
