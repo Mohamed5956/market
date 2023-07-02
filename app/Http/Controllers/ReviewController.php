@@ -28,9 +28,9 @@ class ReviewController extends Controller
         if (count($reviews) <= 0) {
             return response()->json(['data' => $reviews, 'count'=> 0, 'avg' => 0 ,'message' => 'No Data Found.'], 200);
         }else{
-            $rating_avg =
+            $averageRating = Review::average('rating');
             $reviews_collection = ReviewResource::collection($reviews);
-            return response()->json([ 'data' => $reviews_collection, 'count'=> count($reviews_collection), 'avg' =>  array_sum($reviews) / count($reviews) ], 200);
+            return response()->json([ 'data' => $reviews_collection, 'count'=> count($reviews_collection), 'avg' => $averageRating ], 200);
         }
     }
 
