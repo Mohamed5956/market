@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/cart/show/count', [CartController::class, 'count_cart']);
     Route::apiResource('cart', CartController::class);
 //    REVIEW
-    Route::post('/review', [ReviewController::class, 'store_ review']);
+    Route::post('/review', [ReviewController::class, 'store_review']);
     Route::patch('/review/product/{id}', [ReviewController::class, 'update_review']);
     Route::delete('/review/product/{id}', [ReviewController::class, 'delete_review']);
     Route::delete('/review/change/review_comment/{id}', [ReviewController::class, 'delete_review_comment']);
