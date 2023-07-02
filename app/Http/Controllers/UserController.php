@@ -31,7 +31,7 @@ class UserController extends Controller
         $id = Route::current()->parameter('id');
         $user = User::where('id', $id);
         if($user->update($request->all())){
-            return response()->json(['message' => 'Role Updated Successfully'], 200);
+            return response()->json(['message' => 'Data Updated Successfully'], 200);
         }else{
             return response()->json(['error' => 'An error occurred.'], 500);
         }
