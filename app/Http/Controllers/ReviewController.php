@@ -24,7 +24,7 @@ class ReviewController extends Controller
 
     public function list_review($prd_id)
     {
-        $reviews = Review::where('product_id', $prd_id)->get();
+        $reviews = Review::with('user', 'product')->where('product_id', $prd_id)->get();
         if (count($reviews) <= 0) {
             return response()->json(['data' => $reviews, 'count'=> 0, 'avg' => 0 ,'message' => 'No Data Found.'], 200);
         }else{
