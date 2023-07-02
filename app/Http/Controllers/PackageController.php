@@ -62,10 +62,14 @@ class PackageController extends Controller
      */
     public function show(Package $package)
     {
-        //
+        // Retrieve the package along with its package items
+        $packageWithItems = Package::with('packageItems')->findOrFail($package->id);
 
-
+        return response()->json([
+            'package' => $packageWithItems,
+        ]);
     }
+
     /**
      * Update the specified resource in storage.
      */

@@ -24,11 +24,13 @@ class ReviewController extends Controller
 
     public function list_review($prd_id)
     {
-        $reviews = Review::where('product_id', $prd_id)->get();
+        $reviews = Review::with('user', 'product')->where('product_id', $prd_id)->get();
         if (count($reviews) <= 0) {
-            return response()->json(['data' => $reviews, 'message' => 'No Data Found.'], 200);
+            return response()->json(['data' => $reviews, 'count'=> 0, 'avg' => 0 ,'message' => 'No Data Found.'], 200);
         }else{
-            return response()->json([ 'data' => $reviews ], 200);
+            $averageRating = Review::where('product_id', $prd_id)->average('rating');
+            $reviews_collection = ReviewResource::collection($reviews);
+            return response()->json([ 'data' => $reviews_collection, 'count'=> count($reviews_collection), 'avg' => $averageRating ], 200);
         }
     }
 
@@ -38,7 +40,10 @@ class ReviewController extends Controller
      */
     public function store_review(StoreReviewRequest $request)
     {
-            $existingReview = Review::where('user_id', Auth::id())->first();
+            $existingReview = Review::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->first();
+
             if ($existingReview) {
                 throw ValidationException::withMessages([
                     'user_id' => 'You have already submitted a review.',
@@ -84,9 +89,11 @@ class ReviewController extends Controller
             $review_to_update = Review::where('user_id', Auth::id())->where('product_id', $product_id)->first();
 
             if ($review_to_update){
-                $review_to_update['comment'] = $request->comment;
-                $review_to_update['rating'] = $request->rating;
-
+                if($request->comment){
+                    $review_to_update['comment'] = $request->comment;
+                }else{
+                    $review_to_update['rating'] = $request->rating;
+                }
                 $review_to_update->update();
                     return response()->json(["data" => $this->list_review($product_id), 'message'=>'Review updated successfully'], 200);
             }else{

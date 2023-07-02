@@ -19,7 +19,7 @@ class WishlistController extends Controller
     {
         $wishlist = Wishlist::with('user', 'product')->where('user_id', Auth::id())->get();
         if (count($wishlist) <= 0) {
-            return response()->json(['error' => 'No Data Found.'], 404);
+            return response()->json(['error' => 'No Data Found.', 'data' => []], 200);
         }else{
             $wishlist_collection = WishlistResource::collection($wishlist);
             return response()->json(['data'=>$wishlist_collection], 200);
@@ -31,15 +31,18 @@ class WishlistController extends Controller
      */
     public function store(Request $request)
     {
-        $wishlist['user_id'] = Auth::id();
-        $wishlist['product_id'] = (int) $request->product_id;
-        $new_wishlist = Wishlist::create($wishlist);
-        if($new_wishlist){
-            return response()->json(["data" => $new_wishlist],  200);
-        }else{
-            return response()->json(["error" => "Internal Server Error"],  500);
+        if($this->check_for_existence($request->product_id, Auth::id())){
+                return response()->json(['message'=>'Product already exists.'], 200);
+        }else {
+            $wishlist['user_id'] = Auth::id();
+            $wishlist['product_id'] = (int)$request->product_id;
+            $new_wishlist = Wishlist::create($wishlist);
+            if ($new_wishlist) {
+                return response()->json(["data" => $new_wishlist], 200);
+            } else {
+                return response()->json(["error" => "Internal Server Error"], 500);
+            }
         }
-
     }
 
     /**
@@ -73,5 +76,18 @@ class WishlistController extends Controller
         $wishlist->where('user_id', Auth::id())->delete();
         $remainingData = Wishlist::where('user_id', Auth::id())->get();
         return response()->json(['data' => $remainingData, 'message' => 'Wishlist deleted'], 200);
+    }
+
+
+    private function check_for_existence($product_id, $user_id)
+    {
+        $existing_wishlist = Wishlist::where('user_id', $user_id)
+            ->where('product_id', $product_id)->first();
+
+        if ($existing_wishlist)
+            return true;
+
+        return false;
+
     }
 }
