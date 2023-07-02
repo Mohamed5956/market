@@ -48,8 +48,8 @@ class HomeController extends Controller
     }
     public function ProductById($productId)
     {
-        $products = Product::findOrFail($productId);
-        return response()->json(["Products" => $products], 200);
+        $product = Product::findOrFail($productId);
+        return response()->json(["Product" => $product], 200);
     }
         public function Categories(){
         $categories = Category::All();
