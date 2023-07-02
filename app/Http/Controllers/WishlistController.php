@@ -31,16 +31,8 @@ class WishlistController extends Controller
      */
     public function store(Request $request)
     {
-
         if($this->check_for_existence($request->product_id, Auth::id())){
-            $existing_wishlist = Wishlist::where('user_id', Auth::id())
-                ->where('product_id', $request->product_id)->first();
-            $existing_wishlist['prod_qty'] = $existing_wishlist['prod_qty'] + 1;
-            if ($existing_wishlist->update()){
-                return response()->json(['message'=>'Cart updated successfully'], 200);
-            }else{
-                return response()->json(['error' => 'An error occurred. Please try again.'], 500);
-            }
+                return response()->json(['message'=>'Product already exists.'], 200);
         }else {
             $wishlist['user_id'] = Auth::id();
             $wishlist['product_id'] = (int)$request->product_id;
