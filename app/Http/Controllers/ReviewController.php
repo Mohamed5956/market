@@ -115,7 +115,7 @@ class ReviewController extends Controller
 
     public function delete_review_comment(Request $request){
         $review_id = (int)$request->route('id');
-        $review = Review::where('id', $review_id);
+        $review = Review::where('id', $review_id)->first();
         $review->comment = "";
         $review->update();
         return response()->json(['message' => 'Comment deleted'], 200);
