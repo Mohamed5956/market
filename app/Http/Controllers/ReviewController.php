@@ -117,6 +117,8 @@ class ReviewController extends Controller
         $review_id = (int)$request->route('id');
         $review = Review::where('id', $review_id)->first();
         $review->comment = "";
+        if($review->rating == 0.0)
+            $review->delete();
         $review->update();
         return response()->json(['message' => 'Comment deleted'], 200);
     }
