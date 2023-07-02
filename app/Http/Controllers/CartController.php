@@ -38,6 +38,18 @@ class CartController extends Controller
         }
     }
 
+    public function count_cart()
+    {
+        try {
+            $id=Auth::user()->id;
+            $cart = Cart::with('user', 'product')->where('user_id', '=', $id)->get();
+            return response()->json(['count' => count($cart)], 200);
+
+        }catch (Exception $e){
+            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */

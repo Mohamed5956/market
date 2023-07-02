@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
 Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Cart
     Route::delete('/cart/delete', [CartController::class, 'delete_all']);
+    Route::get('/cart/show/count', [CartController::class, 'count_cart']);
     Route::apiResource('cart', CartController::class);
 //    REVIEW
     Route::post('/review', [ReviewController::class, 'store_review']);
