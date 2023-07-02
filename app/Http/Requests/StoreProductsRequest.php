@@ -25,12 +25,12 @@ class StoreProductsRequest extends FormRequest
     {
         return [
             'name' => ['required', 'regex:/^[^0-9][a-zA-Z0-9]*$/'],
-            'description'  => ['nullable','regex:/^[^0-9][a-zA-Z0-9]*$/'],
+            'description'  => ['nullable'],
             'price'  => 'required | integer',
             'quantity'  => 'required | integer',
             'trend' => 'required',
             'subcategory_id' => 'required | integer',
-            'image' => 'nullable|mimes:jpeg,png'
+            'image' => ''
         ];
     }
 
