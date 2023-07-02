@@ -33,13 +33,14 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
-                'name' => $user->name,
-                'lastName' => $user->lastName,
-                "address1" => $user->address1,
-                'phone'=>$user->phone,
-                'email'=>$user->email,
-                'role' => $userRole->name,
-                'token' => $token,
+            'id' => $user->id,
+            'name' => $user->name,
+            "address1" => $user->address1,
+            'lastName' => $user->lastName,
+            'phone'=>$user->phone,
+            'email'=>$user->email,
+            'role' => $userRole,
+            'token' => $token,
         ], 201);
     }
 
@@ -79,7 +80,6 @@ class AuthController extends Controller
                 'email'=>$user->email,
                 'role' => $userRole,
                 'token' => $token,
-
         ]);
     }
     public function googleRedirect()
