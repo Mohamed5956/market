@@ -38,7 +38,10 @@ class ReviewController extends Controller
      */
     public function store_review(StoreReviewRequest $request)
     {
-            $existingReview = Review::where('user_id', Auth::id())->first();
+            $existingReview = Review::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->first();
+
             if ($existingReview) {
                 throw ValidationException::withMessages([
                     'user_id' => 'You have already submitted a review.',
