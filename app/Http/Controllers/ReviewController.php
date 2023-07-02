@@ -89,9 +89,11 @@ class ReviewController extends Controller
             $review_to_update = Review::where('user_id', Auth::id())->where('product_id', $product_id)->first();
 
             if ($review_to_update){
-                $review_to_update['comment'] = $request->comment;
-                $review_to_update['rating'] = $request->rating;
-
+                if($request->comment){
+                    $review_to_update['comment'] = $request->comment;
+                }else{
+                    $review_to_update['rating'] = $request->rating;
+                }
                 $review_to_update->update();
                     return response()->json(["data" => $this->list_review($product_id), 'message'=>'Review updated successfully'], 200);
             }else{
