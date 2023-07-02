@@ -78,12 +78,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/home/orders/{id}', [OrderController::class, 'user_order']);
     // Delete user's order
     Route::delete('/home/orders/{id}', [OrderController::class, 'destroy_order']);
+    // User Update user's data
+    Route::put('users/{id}', [UserController::class, 'updateUserData']);
 
     // Increment Product Quantity
     Route::patch('/inc/product/{product_id}/user/{user_id}', [ProductController::class, 'increment_prod_qty']);
 
     // Decrement Product Quantity
     Route::patch('/dec/product/{product_id}/user/{user_id}', [ProductController::class, 'decrement_prod_qty']);
+    //    payment
+    Route::post('payment',[\App\Http\Controllers\PayPalController::class,'payment']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -91,6 +95,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 //-------HOME-------
 Route::get('/home/packages', [HomeController::class, 'Packages']);
 Route::get('/home/products', [HomeController::class, 'Products']);
+Route::get('/home/products/{productId}', [HomeController::class, 'ProductById']);
 Route::get('/home/categories', [HomeController::class, 'Categories']);
 Route::get('/home/subcategories/{categoryId}', [HomeController::class, 'Subcategories']);
 Route::get('/home/packageitems/{packageId}', [HomeController::class, 'PackageItems']);
@@ -112,8 +117,12 @@ Route::post('/chatbot/answer', [ChatbotController::class, 'processAnswer']);
 Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
 
 
+Route::get('cancel',[\App\Http\Controllers\PayPalController::class,'cancel']);
+Route::get('payment/success',[\App\Http\Controllers\PayPalController::class,'success']);
 
 
 
 Route::get('login/google', [AuthController::class,'googleRedirect']);
 Route::get('login/google/callback',  [AuthController::class,'googleCallback']);
+
+

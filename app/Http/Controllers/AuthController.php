@@ -33,13 +33,14 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
-                'name' => $user->name,
-                'lastName' => $user->lastName,
-                "address1" => $user->address1,
-                'phone'=>$user->phone,
-                'email'=>$user->email,
-                'role' => $userRole->name,
-                'token' => $token,
+            'id' => $user->id,
+            'name' => $user->name,
+            "address" => $user->address,
+            'lastName' => $user->lastName,
+            'phone'=>$user->phone,
+            'email'=>$user->email,
+            'role' => $userRole,
+            'token' => $token,
         ], 201);
     }
 
@@ -73,13 +74,12 @@ class AuthController extends Controller
         return response()->json([
                 'id' => $user->id,
                 'name' => $user->name,
-                "address1" => $user->address1,
+                "address" => $user->address,
                 'lastName' => $user->lastName,
                 'phone'=>$user->phone,
                 'email'=>$user->email,
                 'role' => $userRole,
                 'token' => $token,
-
         ]);
     }
 
@@ -102,7 +102,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'name' => $existingUser->name,
-                "address1" => $user->address1,
+                "address" => $user->address,
                 'lastName' => $user->lastName,
                 'phone'=>$user->phone,
                 'email'=>$user->email,
@@ -133,7 +133,7 @@ class AuthController extends Controller
 
         return response()->json([
             'name' => $newUser->name,
-            "address1" => $user->address1,
+            "address" => $user->address,
             'lastName' => $user->lastName,
             'phone'=>$user->phone,
             'email'=>$user->email,

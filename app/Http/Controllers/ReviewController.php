@@ -86,7 +86,9 @@ class ReviewController extends Controller
     public function update_review(UpdateReviewRequest $request)
     {
             $product_id = (int)$request->route('id');
-            $review_to_update = Review::where('user_id', Auth::id())->where('product_id', $product_id)->first();
+            $user_id = $request->user_id;
+
+        $review_to_update = Review::where('user_id',$user_id )->where('product_id', $product_id)->first();
 
             if ($review_to_update){
                 if($request->comment){

@@ -36,6 +36,15 @@ class UserController extends Controller
             return response()->json(['error' => 'An error occurred.'], 500);
         }
     }
+    public function updateUserData(Request $request){
+        $user = User::where('id', $request->id)->first();
+//        dd($user);
+        if($user->update($request->all())){
+            return response()->json(['message' => 'UserData Updated Successfully'], 200);
+        }else{
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
 
     public function destroy()
     {
