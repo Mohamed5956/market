@@ -107,12 +107,9 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete_review(Request $request)
+    public function delete_review(string $id)
     {
-        $review_to_delete_comment = Review::where('user_id',$request->user_id )->where('product_id',$request->id)->first();
-        // dd($review_to_delete_comment);
-        // $review_to_delete_comment->comment=" ";
-        // $review_to_delete_comment->update();
-        return response()->json([ 'message' =>  $request], 200);
+        $review_to_delete = Review::where('user_id', Auth::id())->where('product_id', (int)$id)->first()->delete();
+        return response()->json(['data' => $this->list_review((int)$id), 'message' => 'Item deleted'], 200);
     }
 }
