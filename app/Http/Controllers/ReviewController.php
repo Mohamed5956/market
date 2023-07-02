@@ -26,9 +26,11 @@ class ReviewController extends Controller
     {
         $reviews = Review::where('product_id', $prd_id)->get();
         if (count($reviews) <= 0) {
-            return response()->json(['data' => $reviews, 'message' => 'No Data Found.'], 200);
+            return response()->json(['data' => $reviews, 'count'=> 0, 'avg' => 0 ,'message' => 'No Data Found.'], 200);
         }else{
-            return response()->json([ 'data' => $reviews ], 200);
+            $rating_avg =
+            $reviews_collection = ReviewResource::collection($reviews);
+            return response()->json([ 'data' => $reviews_collection, 'count'=> count($reviews_collection), 'avg' =>  array_sum($reviews) / count($reviews) ], 200);
         }
     }
 
