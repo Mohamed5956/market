@@ -66,9 +66,10 @@ class PayPalController extends Controller
             $response = $transaction->send();
             if ($response->isSuccessful()) {
                 $arr = $response->getData();
-                $orderData = [];
-                parse_str($request->query('order'), $orderData);
-
+//                dd($request->query('order_items'));
+//                foreach($data as $request->query('order')){
+//                    parse_str($request->query('order'), $orderData);
+//                }
                 $order = Order::create([
                     'firstName' => $user->name,
                     'lastName' => $user->lastName,
@@ -79,8 +80,7 @@ class PayPalController extends Controller
                     'user_id' => $user->id,
                     'tracking_no' => $tracking_no
                 ]);
-
-                $orderItems = $orderData['order_items'];
+                $orderItems = $request->query('order_items');
                 foreach ($orderItems as $item) {
                     $order->orderItems()->create([
                         'product_id' => $item['product_id'],
@@ -92,7 +92,6 @@ class PayPalController extends Controller
                     $product->quantity -= $item['quantity'];
                     $product->update();
                 }
-
                 $order->save();
                 return redirect('http://localhost:8080/success');
             } else {
