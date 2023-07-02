@@ -85,6 +85,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Decrement Product Quantity
     Route::patch('/dec/product/{product_id}/user/{user_id}', [ProductController::class, 'decrement_prod_qty']);
+    //    payment
+    Route::post('payment',[\App\Http\Controllers\PayPalController::class,'payment']);
 });
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -113,6 +115,8 @@ Route::post('/chatbot/answer', [ChatbotController::class, 'processAnswer']);
 Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
 
 
+Route::get('cancel',[\App\Http\Controllers\PayPalController::class,'cancel']);
+Route::get('payment/success',[\App\Http\Controllers\PayPalController::class,'success']);
 
 
 
@@ -123,3 +127,5 @@ Route::post('/chatbot/closechat', [ChatbotController::class, 'closeChat']);
 
 Route::get('login/google', [AuthController::class,'googleRedirect'])->name('login.google');
 Route::get('login/google/callback',  [AuthController::class,'googleCallback']);
+
+
