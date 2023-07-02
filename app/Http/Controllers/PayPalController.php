@@ -33,7 +33,7 @@ class PayPalController extends Controller
                 'amount' => $request->total_price,
                 'order' => $order,
                 'currency' => 'USD',
-                'returnUrl' => url('/api/payment/success').'?auth_user_id='.$userId.'&total_price='.$request->total_price.'&order='.$order,
+                'returnUrl' => url('/api/payment/success').'?auth_user_id='.$userId.'&total_price='.$request->total_price.'&order='.http_build_query($order),
                 'cancelUrl' => url('/api/cancel'),
             ])->send();
             if($response->isRedirect()){
@@ -51,53 +51,56 @@ class PayPalController extends Controller
     public function cancel(){
         return redirect('http://localhost:8000/error');
     }
-    public function success(Request $request){
+    public function success(Request $request)
+    {
         $user_id = $request->auth_user_id;
-        $user = User::where('id',$user_id)->first();
-//        $order = $request->order;
+        $user = User::where('id', $user_id)->first();
         $tracking_no = 'Order' . time();
 
-        if($request->input('paymentId') && $request->input('PayerID')){
-            $transaction = $this->gateway->completePurchase(array(
-                'payerId'=> $request->input('PayerID'),
+        if ($request->input('paymentId') && $request->input('PayerID')) {
+            $transaction = $this->gateway->completePurchase([
+                'payerId' => $request->input('PayerID'),
                 'transactionReference' => $request->input('paymentId')
-            ));
+            ]);
 
             $response = $transaction->send();
-            if($response->isSuccessful()){
+            if ($response->isSuccessful()) {
                 $arr = $response->getData();
+                $orderData = [];
+                parse_str($request->query('order'), $orderData);
+
                 $order = Order::create([
                     'firstName' => $user->name,
                     'lastName' => $user->lastName,
                     'email' => $user->email,
                     'phone' => $user->phone,
-                    'address1' => $user->address1,
+                    'address' => $user->address,
                     'total_price' => $request->total_price,
                     'user_id' => $user->id,
                     'tracking_no' => $tracking_no
                 ]);
-//                $orderItems = $request->order_items;
-//                foreach ($orderItems as $item) {
-//                    $order->orderItems()->create([
-//                        'product_id' => $item['product_id'],
-//                        'quantity' => $item['quantity'],
-//                        'price' => $item['price'],
-//                    ]);
-//                    $product=Product::findOrFail($item['product_id']);
-//                    $product->quantity -= $item['quantity'];
-//                    $product->update();
-//                }
+
+                $orderItems = $orderData['order_items'];
+                foreach ($orderItems as $item) {
+                    $order->orderItems()->create([
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                    ]);
+
+                    $product = Product::findOrFail($item['product_id']);
+                    $product->quantity -= $item['quantity'];
+                    $product->update();
+                }
+
                 $order->save();
                 return redirect('http://localhost:8080/success');
-            }
-            else{
+            } else {
                 return $response->getMessage();
             }
-
-        }
-        else{
+        } else {
             return redirect('http://localhost:8000/error');
         }
-
     }
+
 }
