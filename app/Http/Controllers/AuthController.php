@@ -85,14 +85,14 @@ class AuthController extends Controller
 
     public function googleRedirect()
     {
-        dd("tmam");
+//        dd("tmam");
         return Socialite::driver('google')->redirect();
     }
 
     public function googleCallback()
     {
         $user = Socialite::driver('google')->user();
-
+//        dd($user);
         // Check if the user already exists in your database
         $existingUser = User::where('social_id', $user->id)->first();
 
