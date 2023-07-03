@@ -20,11 +20,11 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
         'scheme' => 'https',
     ],
-    
-    'gmail' => [
-        'client_id' => env('GMAIL_CLIENT_ID'),
-        'client_secret' => env('GMAIL_CLIENT_SECRET'),
-        'redirect' => env('GMAIL_REDIRECT_URI'),
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_SECRET_KEY'),
+        'redirect' => 'http://127.0.0.1:8000/api/auth/google/callback',
     ],
 
 
