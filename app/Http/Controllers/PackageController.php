@@ -79,6 +79,8 @@ class PackageController extends Controller
         if($request->image){
             $this->save_image($request->image, $package);
             $this->delete_image($old_image);
+        }else{
+            $package['image'] = $old_image;
         }
         if ($package->update($request->all())) {
             return response()->json(new PackageResource($package), 201);

@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::All();
+        $products = Product::with('subcategory')->get();
         return response()->json(["data" => $products], 200);
     }
 
@@ -71,6 +71,8 @@ class ProductController extends Controller
         $new_info = $request->all();
         $product = Product::find($id);
 
+        $old_image = $product->image;
+
         // Save the image first
         if($request->hasFile("image"))
         {
@@ -86,9 +88,9 @@ class ProductController extends Controller
                     'error' => $moveImageException->getMessage()
                 ]);
             }
-
+        }else{
+            $new_info['image'] = $old_image;
         }
-
         // Save the product and return a success response
         $updated_product = $product->update($new_info);
         if($updated_product)

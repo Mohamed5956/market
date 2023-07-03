@@ -24,8 +24,8 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'regex:/^[^0-9][a-zA-Z0-9]*$/'],
-            'image' => 'nullable|mimes:jpeg,png'
+            'name' => ['required'],
+            'image' => 'nullable|mimes:jpeg,png,jpg'
         ];
     }
 
