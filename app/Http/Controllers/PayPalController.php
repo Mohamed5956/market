@@ -28,12 +28,19 @@ class PayPalController extends Controller
 //            dd($request->all());
             $userId=Auth::id();
 //            dd($user);
+            $phone=$request->phone;
+            $address=$request->address;
             $order = $request->all();
             $response = $this->gateway->purchase([
                 'amount' => $request->total_price,
                 'order' => $order,
                 'currency' => 'USD',
-                'returnUrl' => url('/api/payment/success').'?auth_user_id='.$userId.'&total_price='.$request->total_price.'&order='.http_build_query($order),
+                'returnUrl' => url('/api/payment/success').
+                                                                '?auth_user_id='.$userId
+                                                                .'&total_price='.$request->total_price
+                                                                .'&order='.http_build_query($order)
+                                                                .'&phone='.$phone
+                                                                .'&address='.$address,
                 'cancelUrl' => url('/api/cancel'),
             ])->send();
             if($response->isRedirect()){
@@ -56,7 +63,8 @@ class PayPalController extends Controller
         $user_id = $request->auth_user_id;
         $user = User::where('id', $user_id)->first();
         $tracking_no = 'Order' . time();
-
+        $phone=$request->phone;
+        $address=$request->address;
         if ($request->input('paymentId') && $request->input('PayerID')) {
             $transaction = $this->gateway->completePurchase([
                 'payerId' => $request->input('PayerID'),
@@ -74,8 +82,8 @@ class PayPalController extends Controller
                     'firstName' => $user->name,
                     'lastName' => $user->lastName,
                     'email' => $user->email,
-                    'phone' => $user->phone,
-                    'address' => $user->address,
+                    'phone' => $phone,
+                    'address' => $address,
                     'total_price' => $request->total_price,
                     'user_id' => $user->id,
                     'tracking_no' => $tracking_no
@@ -98,7 +106,7 @@ class PayPalController extends Controller
                 return $response->getMessage();
             }
         } else {
-            return redirect('http://localhost:8000/error');
+            return redirect('http://localhost:8080/error');
         }
     }
 
