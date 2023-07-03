@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             //
-            $table->integer('discount')->after('price')->default(0);
+            $table->integer('discount')->after('total_price')->default(0)->nullable();
 
         });
     }
