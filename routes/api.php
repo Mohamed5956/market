@@ -122,7 +122,7 @@ Route::get('payment/success',[\App\Http\Controllers\PayPalController::class,'suc
 
 
 
-Route::get('login/google', [AuthController::class,'googleRedirect']);
-Route::get('login/google/callback',  [AuthController::class,'googleCallback']);
+Route::get('/auth/google', [AuthController::class,'googleRedirect']);
+Route::get('/auth/google/callback',  [AuthController::class,'googleCallback']);
 
 

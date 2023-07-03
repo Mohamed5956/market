@@ -86,6 +86,7 @@ class AuthController extends Controller
 
     public function googleRedirect()
     {
+        dd("tmam");
         return Socialite::driver('google')->redirect();
     }
 
