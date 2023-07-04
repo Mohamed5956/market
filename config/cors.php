@@ -15,7 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'http://localhost:8080', // Add your Vue.js app's URL here
+    ],
 
     'allowed_methods' => ['*'],
 

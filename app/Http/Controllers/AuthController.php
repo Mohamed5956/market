@@ -85,16 +85,14 @@ class AuthController extends Controller
 
     public function googleRedirect()
     {
-//        dd("tmam");
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->redirectUrl('http://127.0.0.1:8000/api/auth/google/callback')->redirect();
+//        return response()->json(['redirect_url' => $response]);
     }
 
     public function googleCallback()
     {
         $user = Socialite::driver('google')->user();
-//        dd($user);
-        // Check if the user already exists in your database
-        $existingUser = User::where('social_id', $user->id)->first();
+        $existingUser = User::where('email', $user->email)->first();
 
         if ($existingUser) {
             // User exists, generate a token and return the response
