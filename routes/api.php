@@ -97,6 +97,7 @@ Route::get('/home/packages', [HomeController::class, 'Packages']);
 Route::get('/home/products', [HomeController::class, 'Products']);
 Route::get('/home/products/{productId}', [HomeController::class, 'ProductById']);
 Route::get('/home/categories', [HomeController::class, 'Categories']);
+Route::get('/home/subcategories', [HomeController::class, 'AllSubCategories']);
 Route::get('/home/subcategories/{categoryId}', [HomeController::class, 'Subcategories']);
 Route::get('/home/packageitems/{packageId}', [HomeController::class, 'PackageItems']);
 
