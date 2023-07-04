@@ -49,11 +49,17 @@ class UserController extends Controller
     public function destroy()
     {
         $id = Route::current()->parameter('id');
-        $user = User::where('id', $id);
-        if($user->delete()) {
-            return response()->json(['message' => 'Role Updated Successfully', "user"=>$user], 200);
+
+        if (Auth::id() == $id){
+            $user = User::where('id', $id)->first();
+            if($user->delete()) {
+                return response()->json(['message' => 'Role Updated Successfully', "user"=>$user], 200);
+            }else{
+                return response()->json(['error' => 'An error occurred.'], 500);
+            }
         }else{
-            return response()->json(['error' => 'An error occurred.'], 500);
+            return response()->json(['message' => 'Unauthorized to delete this user'], 403);
         }
+
     }
 }

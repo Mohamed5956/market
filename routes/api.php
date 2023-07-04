@@ -80,6 +80,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/home/orders/{id}', [OrderController::class, 'destroy_order']);
     // User Update user's data
     Route::put('users/{id}', [UserController::class, 'updateUserData']);
+    // Delete User Account
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
 
     // Increment Product Quantity
     Route::patch('/inc/product/{product_id}/user/{user_id}', [ProductController::class, 'increment_prod_qty']);

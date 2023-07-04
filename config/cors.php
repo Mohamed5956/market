@@ -18,6 +18,8 @@ return [
     'paths' => [
         'api/*',
         'sanctum/csrf-cookie',
+        'auth/google',
+        'auth/google/callback',
         'http://localhost:8080', // Add your Vue.js app's URL here
     ],
 
