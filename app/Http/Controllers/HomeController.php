@@ -64,7 +64,7 @@ class HomeController extends Controller
         $userController = new UserController();
         $tracking_no = 'Order' . time();
         if($user && $user->phone){
-            $user->address1 = $request->address;
+            $user->address = $request->address;
             $user->update();
             $order = Order::create([
                 'firstName' => $user->name,
@@ -77,7 +77,7 @@ class HomeController extends Controller
                 'tracking_no' => $tracking_no
             ]);
         }elseif ($user){
-            $user->address1 = $request->address;
+            $user->address = $request->address;
             $user->phone = $request->phone;
             $user->update();
             $order = Order::create([
@@ -85,7 +85,7 @@ class HomeController extends Controller
                 'lastName' => $user->lastName,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'address' => $user->address1,
+                'address' => $user->address,
                 'total_price' => $request->total_price,
                 'user_id' => $user->id,
                 'tracking_no' => $tracking_no
