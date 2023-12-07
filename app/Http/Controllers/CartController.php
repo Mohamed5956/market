@@ -34,7 +34,7 @@ class CartController extends Controller
                 return response()->json(['data' => $cart_collection], 200);
             }
         }catch (Exception $e){
-            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+            return response()->json(['message' => 'An error occurred. Please try again.'], 500);
         }
     }
 
@@ -45,7 +45,7 @@ class CartController extends Controller
             $cart = Cart::with('user', 'product')->where('user_id', '=', $id)->get();
             return response()->json(['count' => count($cart)], 200);
         }catch (Exception $e){
-            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+            return response()->json(['message' => 'An error occurred. Please try again.'], 500);
         }
     }
 
@@ -62,7 +62,7 @@ class CartController extends Controller
                 $all_cart = Cart::all();
                 return response()->json(["data" => $all_cart, 'message'=>'Cart updated successfully'], 200);
             }else{
-                return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+                return response()->json(['message' => 'An error occurred. Please try again.'], 500);
             }
         }else {
             $cart['product_id'] = (int)$request->product_id;
@@ -86,7 +86,7 @@ class CartController extends Controller
             $cart = Cart::findOrFail($cart);
             return response()->json(['data' => $cart],200);
         }catch (Exception $e){
-            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+            return response()->json(['message' => 'An error occurred. Please try again.'], 500);
         }
     }
 
@@ -102,7 +102,7 @@ class CartController extends Controller
             $all_cart = Cart::all();
             return response()->json(["data" => $all_cart, 'message'=>'Cart updated successfully'], 200);
         }else{
-            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+            return response()->json(['message' => 'An error occurred. Please try again.'], 500);
         }
     }
 

@@ -39,7 +39,7 @@ class OrderItemController extends Controller
         if ($orderItem->save()) {
             return response()->json(new OrderItemResource($orderItem), 201);
         } else {
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['message' => 'Server Error'], 500);
         }
 //        $Orderitem = Orderitem::create($request->all());
 //

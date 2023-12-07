@@ -52,8 +52,11 @@ Route::group(['middleware' => ['auth:sanctum','admin']], function () {
     //    Route::apiResource('chatbot', ChatbotController::class);
     //-------Get ALL Users------
     Route::get('users', [UserController::class, 'index']);
+    Route::get('users/{id}', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+
     // DELETE USER
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
+    Route::delete('delete/users/{id}', [UserController::class, 'adminDelete']);
     // Change user role
     Route::put('users/{id}/role', [UserController::class, 'update']);
 });

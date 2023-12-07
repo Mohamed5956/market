@@ -85,7 +85,7 @@ class PackageController extends Controller
         if ($package->update($request->all())) {
             return response()->json(new PackageResource($package), 201);
         } else {
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['message' => 'Server Error'], 500);
         }
     }
 
@@ -99,7 +99,7 @@ class PackageController extends Controller
         if ($package->delete()) {
             return response()->json(['message' => 'deleted successfully'], 203);
         } else {
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['message' => 'Server Error'], 500);
         }
     }
 

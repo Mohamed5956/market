@@ -99,7 +99,7 @@ class ReviewController extends Controller
                 $review_to_update->update();
                     return response()->json(["data" => $this->list_review($product_id), 'message'=>'Review updated successfully'], 200);
             }else{
-                return response()->json(['error' => 'No review for this user'], 500);
+                return response()->json(['message' => 'No review for this user'], 500);
             }
     }
 

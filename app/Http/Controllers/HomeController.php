@@ -116,7 +116,7 @@ class HomeController extends Controller
         if ($order->save()) {
             return response()->json(new OrderResource($order), 201);
         } else {
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['message' => 'Server Error'], 500);
         }
     }
 
@@ -126,7 +126,7 @@ class HomeController extends Controller
         if (count($order) > 0) {
             return response()->json([ 'data' => $order ], 200);
         }else{
-            return response()->json(['error' => 'No Data Found.'], 400);
+            return response()->json(['message' => 'No Data Found.'], 400);
         }
     }
     public function AllSubCategories()
@@ -135,7 +135,7 @@ class HomeController extends Controller
         if (count($subcategories) > 0) {
             return response()->json([ 'data' => $subcategories ], 200);
         }else{
-            return response()->json(['error' => 'No Data Found.'], 400);
+            return response()->json(['message' => 'No Data Found.'], 400);
         }
     }
 

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProductsRequest;
 use App\Models\Cart;
 use App\Models\Product;
 
+use App\Models\Subcategory;
 use Exception;
 use Illuminate\Http\Request;
 use Spatie\Ignition\Tests\TestClasses\Models\Car;
@@ -18,7 +19,23 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('subcategory')->get();
-        return response()->json(["data" => $products], 200);
+        $formattedProducts = [];
+        foreach ($products as $product) {
+            $formattedProducts[] = [
+                "id"=> $product->id,
+            "name" => $product->name,
+            "slug" => $product->slug,
+            "description" => $product->description,
+            "price" => $product->price,
+            "discount" => $product->discount,
+            "quantity" => $product->quantity,
+            "image" => $product->image,
+            "trend" => $product->trend,
+            "subcategory_id" => $product->subcategory_id,
+                "subcategory_name" => $product->subcategory->name ,
+            ];
+        }
+        return response()->json(["data" => $formattedProducts], 200);
     }
 
     /**
@@ -39,7 +56,7 @@ class ProductController extends Controller
             }catch(Exception $moveImageException)
             {
                 return response()->json([
-                    'error' => $moveImageException->getMessage()
+                    'message' => $moveImageException->getMessage()
                 ]);
             }
         }
@@ -59,6 +76,8 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $data = Product::with('reviews')->findOrFail($product->id);
+        $sub_category=Subcategory::find($data->subcategory_id);
+        $data->sub_category_name=$sub_category->name;
         return response()->json(['data'=>$data]);
     }
 
@@ -85,7 +104,7 @@ class ProductController extends Controller
             }catch(Exception $moveImageException)
             {
                 return response()->json([
-                    'error' => $moveImageException->getMessage()
+                    'message' => $moveImageException->getMessage()
                 ]);
             }
         }else{

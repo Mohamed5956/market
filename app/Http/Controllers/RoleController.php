@@ -70,7 +70,7 @@ class RoleController extends Controller
         if ($role->save()) {
             return response()->json(new RoleResource($role), 201);
         } else {
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['message' => 'Server Error'], 500);
         }
     }
 
@@ -80,7 +80,13 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        $rol=Role::find($role->id);
+        if($rol) {
+            return response()->json(["role"=>$rol], 200);
+        }else{
+            return response()->json(['message' => 'An error occurred.'], 500);
+        }
+
     }
 
     /**

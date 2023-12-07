@@ -24,7 +24,7 @@ class UserController extends Controller
                 'users' => $users_collection,
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred.'], 500);
+            return response()->json(['message' => 'An error occurred.'], 500);
         }
     }
     public function update(Request $request){
@@ -33,7 +33,7 @@ class UserController extends Controller
         if($user->update($request->all())){
             return response()->json(['message' => 'Role Updated Successfully'], 200);
         }else{
-            return response()->json(['error' => 'An error occurred.'], 500);
+            return response()->json(['message' => 'An error occurred.'], 500);
         }
     }
     public function updateUserData(Request $request){
@@ -42,7 +42,7 @@ class UserController extends Controller
         if($user->update($request->all())){
             return response()->json(['message' => 'UserData Updated Successfully'], 200);
         }else{
-            return response()->json(['error' => 'An error occurred.'], 500);
+            return response()->json(['message' => 'An error occurred.'], 500);
         }
     }
 
@@ -55,11 +55,41 @@ class UserController extends Controller
             if($user->delete()) {
                 return response()->json(['message' => 'Role Updated Successfully', "user"=>$user], 200);
             }else{
-                return response()->json(['error' => 'An error occurred.'], 500);
+                return response()->json(['message' => 'An error occurred.'], 500);
             }
         }else{
             return response()->json(['message' => 'Unauthorized to delete this user'], 403);
         }
 
+    }
+    public function adminDelete(){
+        $id = Route::current()->parameter('id');
+            $user = User::where('id', $id)->first();
+            if($user->delete()) {
+                return response()->json(['message' => 'User deleted Successfully', "user"=>$user], 200);
+            }else{
+                return response()->json(['message' => 'An error occurred.'], 500);
+            }
+    }
+    public function show($id){
+        $user=User::find($id);
+        if($user) {
+            return response()->json(["user"=>$user], 200);
+        }else{
+            return response()->json(['message' => 'An error occurred.'], 500);
+        }
+    }
+    public function store(CreateUserRequest $request){
+        $user = new User($request->all());
+        $user->role_id = $request->role_id;
+
+        $user->save();
+//        dd($request);
+
+        if ($user->save()) {
+            return response()->json(new UserResource($user), 201);
+        } else {
+            return response()->json(['message' => 'Server Error'], 500);
+        }
     }
 }
