@@ -18,6 +18,7 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\Controller;
 
 
 
@@ -32,6 +33,9 @@ use App\Http\Controllers\ChatbotController;
 |
 */
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
+    Route::post('/images', [Controller::class, 'storeImages']);
+    Route::delete('/delete/review/product/{id}', [ReviewController::class, 'adminDeleteReview']);
+
     // Routes that require admin role
     Route::apiResource('roles',RoleController::class);
     Route::apiResource('packages',PackageController::class);
