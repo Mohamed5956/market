@@ -68,7 +68,7 @@ class subCategoryController extends Controller
             return response()->json(["message" => "An error occure while deleting category"], 400);
     }
     private function delete_image($image_name){
-        if($image_name !='images/subCategories/subCategory_defualt_image.jpg' ){
+        if($image_name !='images/defualt_image.jpg' ){
             try{
                 unlink(public_path('/'.$image_name));
             }catch (\Exception $e){
@@ -79,12 +79,12 @@ class subCategoryController extends Controller
 
     private function save_image($image, $subcategory){
         if ($image){
-            $image_name = "images/subCategories/".time().'.'.$image->extension();
-            $image->move(public_path('images/subCategories'),$image_name);
+            $image_name = "images/".time().'.'.$image->extension();
+            $image->move(public_path('images'),$image_name);
         }
         else
         {
-            $image_name = "images/subCategories/subCategory_defualt_image.jpg";
+            $image_name = "images/defualt_image.jpg";
         }
         $subcategory->image = $image_name;
         $subcategory->save();

@@ -23,7 +23,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->all());
-        $this->save_image($request->image,$category);
+//        $this->save_image($request->image,$category);
         return response()->json(["data" => $category], 201);
     }
 
@@ -58,7 +58,6 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-
         $category = Category::find($id);
         $this->delete_image($category->image);
         if($category->delete())
@@ -67,7 +66,7 @@ class CategoryController extends Controller
             return response()->json(["message" => "An error occure while deleting category"], 400);
     }
     private function delete_image($image_name){
-        if($image_name !='images/categories/category_defualt_image.jpg'){
+        if($image_name !='images/defualt_image.jpg'){
             try{
                 unlink(public_path('/'.$image_name));
             }catch (\Exception $e){
@@ -76,18 +75,18 @@ class CategoryController extends Controller
         }
     }
 
-    private function save_image($image, $category){
-        if ($image){
-            $image_name = "images/categories/".time().'.'.$image->extension();
-            $image->move(public_path('images/categories'),$image_name);
-        }
-        else
-        {
-            $image_name = "images/categories/category_defualt_image.jpg";
-        }
-
-        $category->image = $image_name;
-        $category->save();
-    }
+//    private function save_image($image, $category){
+//        if ($image){
+//            $image_name = "images/".time().'.'.$image->extension();
+//            $image->move(public_path('images'),$image_name);
+//        }
+//        else
+//        {
+//            $image_name = "images/defualt_image.jpg";
+//        }
+//
+//        $category->image = $image_name;
+//        $category->save();
+//    }
 
 }
