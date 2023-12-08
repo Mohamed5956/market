@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('lastName')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->foreignId('role_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('role_id'); // You can adjust the column definition as needed
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -99,7 +99,7 @@ class ReviewController extends Controller
                 $review_to_update->update();
                     return response()->json(["data" => $this->list_review($product_id), 'message'=>'Review updated successfully'], 200);
             }else{
-                return response()->json(['error' => 'No review for this user'], 500);
+                return response()->json(['message' => 'No review for this user'], 500);
             }
     }
 
@@ -111,6 +111,7 @@ class ReviewController extends Controller
     {
         $review_to_delete = Review::where('user_id', Auth::id())->where('product_id', (int)$id)->first()->delete();
         return response()->json(['data' => $this->list_review((int)$id), 'message' => 'Item deleted'], 200);
+
     }
 
     public function delete_review_comment(Request $request){
@@ -121,5 +122,10 @@ class ReviewController extends Controller
             $review->delete();
         $review->update();
         return response()->json(['message' => 'Comment deleted'], 200);
+    }
+    public function adminDeleteReview(string $id ,Request $request){
+        $product_id=$request->query('product_id');
+        $review_to_delete = Review::where('id', (int)$id)->first()->delete();
+        return response()->json(['data' => $this->list_review((int)$product_id), 'message' => 'Item deleted'], 200);
     }
 }

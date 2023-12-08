@@ -26,7 +26,7 @@ class OrderController extends Controller
         if(count($orders)>0){
             return response()->json(["data" => $orders], 200);
         }else{
-            return response()->json(['error' => 'No orders :(( ', 'data' => []],  200);
+            return response()->json(['message' => 'No orders :(( ', 'data' => []],  200);
         }
     }
 
@@ -84,7 +84,7 @@ class OrderController extends Controller
         if($order->delete()){
             return response()->json(['message' => 'Order deleted successfully'], 200);
         }else{
-            return response()->json(["error" => 'An error occurred. Try again later'], 200);
+            return response()->json(["message" => 'An error occurred. Try again later'], 200);
         }
     }
 

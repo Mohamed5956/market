@@ -19,7 +19,7 @@ class WishlistController extends Controller
     {
         $wishlist = Wishlist::with('user', 'product')->where('user_id', Auth::id())->get();
         if (count($wishlist) <= 0) {
-            return response()->json(['error' => 'No Data Found.', 'data' => []], 200);
+            return response()->json(['message' => 'No Data Found.', 'data' => []], 200);
         }else{
             $wishlist_collection = WishlistResource::collection($wishlist);
             return response()->json(['data'=>$wishlist_collection], 200);
@@ -40,7 +40,7 @@ class WishlistController extends Controller
             if ($new_wishlist) {
                 return response()->json(["data" => $new_wishlist], 200);
             } else {
-                return response()->json(["error" => "Internal Server Error"], 500);
+                return response()->json(["message" => "Internal Server Error"], 500);
             }
         }
     }

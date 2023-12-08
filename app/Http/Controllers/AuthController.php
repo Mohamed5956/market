@@ -22,7 +22,7 @@ class AuthController extends Controller
     {
         $userRole = Role::where('name', 'user')->first();
         if (!$userRole) {
-            return response()->json(['errors' => 'Role not found. Please contact the administrator.'], 500);
+            return response()->json(['message' => 'Role not found. Please contact the administrator.'], 500);
         }
 
         $user = new User($request->all());
@@ -66,7 +66,7 @@ class AuthController extends Controller
         }
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
-            return response()->json(['errors' => ['email' => ['The provided credentials are incorrect.']]], 500);
+            return response()->json(['message' => ['email' => ['The provided credentials are incorrect.']]], 500);
         }
         $user = Auth::user();
         $userRole = Auth::user()->role;
@@ -114,7 +114,7 @@ class AuthController extends Controller
         // User does not exist, create a new user
         $userRole = Role::where('name', 'user')->first();
         if (!$userRole) {
-            return response()->json(['errors' => 'Role not found. Please contact the administrator.'], 500);
+            return response()->json(['message' => 'Role not found. Please contact the administrator.'], 500);
         }
 
         $newUser = new User();
