@@ -22,7 +22,11 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        
         $category = Category::create($request->all());
+        $category->image = $request->image;
+     
+        $category->save();
 //        $this->save_image($request->image,$category);
         return response()->json(["data" => $category], 201);
     }
