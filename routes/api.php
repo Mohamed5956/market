@@ -32,8 +32,9 @@ use App\Http\Controllers\Controller;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/images', [Controller::class, 'storeImages']);
+
 Route::group(['middleware' => ['auth:sanctum','admin']], function () {
-    Route::post('/images', [Controller::class, 'storeImages']);
     Route::delete('/delete/review/product/{id}', [ReviewController::class, 'adminDeleteReview']);
 
     // Routes that require admin role
