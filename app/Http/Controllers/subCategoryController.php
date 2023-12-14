@@ -24,7 +24,8 @@ class subCategoryController extends Controller
     public function store(StoreSubCategoryRequest $request)
     {
         $subcategory = Subcategory::create($request->all());
-        $this->save_image($request->image,$subcategory);
+        $subcategory->image = $request->image;
+        $subcategory->save();
         return response()->json(["data" => $subcategory], 201);
     }
 
@@ -42,13 +43,10 @@ class subCategoryController extends Controller
      */
     public function update(StoreSubCategoryRequest $request, Subcategory $subcategory)
     {
-        $old_image=  $subcategory->image;
-        $subcategory->update($request->all());
         if($request->image){
-            $this->save_image($request->image, $subcategory);
-            $this->delete_image($old_image);
+            $subcategory->image = $request->image;
+            $subcategory->save();
         }
-
         if($subcategory->update($request->all()))
             return response()->json($subcategory, 201);
         else

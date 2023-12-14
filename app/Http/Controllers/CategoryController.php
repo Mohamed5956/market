@@ -23,8 +23,8 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->all());
-        
-//        $this->save_image($request->image,$category);
+        $category->image = $request->image;
+        $category->save();
         return response()->json(["data" => $category], 201);
     }
 
@@ -42,10 +42,9 @@ class CategoryController extends Controller
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
-        $old_image=  $category->image;
         if($request->image){
-            $this->save_image($request->image, $category);
-            $this->delete_image($old_image);
+            $category->image = $request->image;
+            $category->save();
         }
 
         if($category->update($request->all()))
