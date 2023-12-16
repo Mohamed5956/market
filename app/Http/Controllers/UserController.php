@@ -30,6 +30,10 @@ class UserController extends Controller
     public function update(Request $request){
         $id = Route::current()->parameter('id');
         $user = User::where('id', $id);
+        if($request->photo) {
+            $user->photo = $request->photo;
+            $user->save();
+        }
         if($user->update($request->all())){
             return response()->json(['message' => 'Role Updated Successfully'], 200);
         }else{
@@ -38,7 +42,10 @@ class UserController extends Controller
     }
     public function updateUserData(Request $request){
         $user = User::where('id', $request->id)->first();
-//        dd($user);
+        if($request->photo) {
+            $user->photo = $request->photo;
+            $user->save();
+        }
         if($user->update($request->all())){
             return response()->json(['message' => 'UserData Updated Successfully'], 200);
         }else{
@@ -82,10 +89,8 @@ class UserController extends Controller
     public function store(CreateUserRequest $request){
         $user = new User($request->all());
         $user->role_id = $request->role_id;
-
+        $user->photo = $request->photo;
         $user->save();
-//        dd($request);
-
         if ($user->save()) {
             return response()->json(new UserResource($user), 201);
         } else {

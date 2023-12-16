@@ -42,7 +42,8 @@ class PackageController extends Controller
         $package['description'] = $request->description;
         $package['discount'] = $request->discount;
         $package = Package::create($package);
-        $this->save_image($request->image, $package);
+        $package->image = $request->image;
+        $package->save();
         $packageItems = $request->package_items;
         foreach ($packageItems as $item) {
             $package->packageItems()->create([
@@ -75,12 +76,9 @@ class PackageController extends Controller
      */
     public function update(UpdatePackageRequest $request, Package $package) :JsonResponse
     {
-        $old_image=  $package->image;
         if($request->image){
-            $this->save_image($request->image, $package);
-            $this->delete_image($old_image);
-        }else{
-            $package['image'] = $old_image;
+            $package->image = $request->image;
+            $package->save();
         }
         if ($package->update($request->all())) {
             return response()->json(new PackageResource($package), 201);

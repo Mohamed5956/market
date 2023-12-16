@@ -43,31 +43,10 @@ class ProductController extends Controller
      */
     public function store(StoreProductsRequest $request)
     {
-        $product = $request->all();
-
-        // Save the image first
-        if($request->hasFile("image"))
-        {
-            try{
-                $image = $request->file("image");
-                $image_name = "images/".time().'.'.$image->extension();
-                $image->move(public_path("images"), $image_name);
-
-            }catch(Exception $moveImageException)
-            {
-                return response()->json([
-                    'message' => $moveImageException->getMessage()
-                ]);
-            }
-        }
-        else
-        {
-            $image_name = "images/defualt_image.jpg";
-        }
-        // Save the product and return a success response
-        $product['image'] = $image_name;
-        $new_product = Product::create($product);
-        return response()->json($new_product, 201);
+        $product = Product::create($request->all());
+        $product->image = $request->image;
+        $product->save();
+        return response()->json($product, 201);
     }
 
     /**
@@ -87,36 +66,15 @@ class ProductController extends Controller
 
     public function update(StoreProductsRequest $request, string $id)
     {
-        $new_info = $request->all();
         $product = Product::find($id);
-
-        $old_image = $product->image;
-
-        // Save the image first
-        if($request->hasFile("image"))
-        {
-            try{
-                $image = $request->file("image");
-                $image_name = "images/".time().'.'.$image->extension();
-                $image->move(public_path("images/"), $image_name);
-                error_log($image_name);
-                $new_info['image'] = $image_name;
-            }catch(Exception $moveImageException)
-            {
-                return response()->json([
-                    'message' => $moveImageException->getMessage()
-                ]);
-            }
-        }else{
-            $new_info['image'] = $old_image;
+        if($request->image) {
+            $product->image = $product->image;
+            $product->save();
         }
-        // Save the product and return a success response
-        $updated_product = $product->update($new_info);
-        if($updated_product)
+        if($product->update($request->all()))
             return response()->json($product, 201);
         else
             return response()->json(["message" => "An error occur while updating"], 400);
-
     }
 
     /**

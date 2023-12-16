@@ -28,6 +28,26 @@ class AuthController extends Controller
         $user = new User($request->all());
         $user->password = Hash::make($request['password']);
         $user->role_id = $userRole->id;
+        if($request->hasFile("photo"))
+        {
+            try{
+                $photo = $request->file("photo");
+                $photo_name = "images/".time().'.'.$photo->extension();
+                $photo->move(public_path("images"), $photo_name);
+
+            }catch(Exception $moveImageException)
+            {
+                return response()->json([
+                    'message' => $moveImageException->getMessage()
+                ]);
+            }
+        }
+        else
+        {
+            $photo_name = "images/defualt_image.jpg";
+        }
+        // Save the product and return a success response
+        $user['photo'] = $photo_name;
         $user->save();
 
         $token = $user->createToken('token')->plainTextToken;
