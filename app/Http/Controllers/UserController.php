@@ -28,14 +28,15 @@ class UserController extends Controller
         }
     }
     public function update(Request $request){
-        $id = Route::current()->parameter('id');
-        $user = User::where('id', $id);
+        $user = User::where('id',$request->id)->first();
         if($request->photo) {
             $user->photo = $request->photo;
             $user->save();
         }
+        $user->update($request->all());
+        $user->save();
         if($user->update($request->all())){
-            return response()->json(['message' => 'Role Updated Successfully'], 200);
+            return response()->json(['message' => 'User Updated Successfully'], 200);
         }else{
             return response()->json(['message' => 'An error occurred.'], 500);
         }
