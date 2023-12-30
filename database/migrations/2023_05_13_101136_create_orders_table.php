@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('total_price');
-            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('user_id'); // You can adjust the column definition as needed
+            $table->foreign('user_id')->references('id')->on('users');
             $table->enum('status',['Processing','On delivery','Delivered'])->default('Processing');
             $table->string('tracking_no')->unique();
             $table->timestamps();
