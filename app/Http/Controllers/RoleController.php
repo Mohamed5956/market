@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -94,7 +95,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+
     }
 
     /**
@@ -111,7 +112,13 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        $users=User::where('role_id',$role->id)->get();
+        $userCount = $users->count();
+        if($userCount>0) {
+            return response()->json(['message' => 'An error occurred.'], 500);
+         }else{
             $role->delete();
             return response()->json(['message' => 'deleted successfully'], 203);
+        }
     }
 }
